@@ -1,0 +1,15 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <path id="circlePath" d="M 100, 100 m -80, 0 a 80,80 0 1,1 160,0 a 80,80 0 1,1 -160,0" />
+  </defs>
+  
+
+  
+  <!-- Circular text -->
+  <text font-family="Arial, sans-serif" font-size="6" font-weight="bold" letter-spacing="2.8" fill="black">
+    <textPath href="#circlePath" startOffset="0%" text-anchor="start">
+      CREATIVITY WITH PURPOSE - STRATEGY MEETS STORYTELLING - INNOVATION AT EVERY FRAME -
+    </textPath>
+  </text>
+
+</svg>

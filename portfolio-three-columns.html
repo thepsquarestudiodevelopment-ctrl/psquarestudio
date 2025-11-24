@@ -7,6 +7,410 @@
     <meta name="description" content="PSquare Studio" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
+    <style>
+      /* ---------- existing resets & buttons ---------- */
+      button {
+        border: 0;
+        background: transparent;
+        padding: 10px 16px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+      }
+      button.active {
+        background: #111;
+        color: #fff;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+      }
+      .td-portfolio-filter-btn button:hover {
+        opacity: 0.92;
+      }
+
+      /* ---------- card container ---------- */
+      .td-portfolio-filter-wrapper {
+        position: relative;
+        border-radius: 16px;
+        overflow: hidden;
+        background: #000;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+        transition: 0.25s ease;
+        min-height: 220px;
+      }
+      .td-portfolio-filter-wrapper:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 18px 45px rgba(0, 0, 0, 0.18);
+      }
+
+      /* ---------- media equal size ---------- */
+      .td-portfolio-filter-thumb img,
+      .td-portfolio-filter-thumb video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        aspect-ratio: 3 / 3;
+        display: block;
+        background: #111;
+      }
+      .td-portfolio-filter-thumb {
+        width: 100%;
+        height: 100%;
+      }
+      .td-portfolio-filter-thumb video {
+        aspect-ratio: 3 / 3;
+      }
+
+      /* bottom gradient + label */
+      .td-portfolio-filter-wrapper::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        height: 45%;
+        background: linear-gradient(to top, rgba(0, 0, 0, 0.55), transparent);
+        z-index: 5;
+      }
+      .portfolio-label {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        padding: 16px 20px;
+        width: 100%;
+        font-size: 18px;
+        font-weight: 600;
+        color: #fff;
+        z-index: 10;
+      }
+      .mb-30 {
+        margin-bottom: 35px !important;
+      }
+
+      /* ---------- MOBILE HORIZONTAL SCROLL ---------- */
+      .portfolio-filter-scroll {
+        width: 100%;
+        overflow-x: auto;
+        overflow-y: hidden;
+        white-space: nowrap;
+        padding-bottom: 12px;
+        cursor: grab;
+        -webkit-overflow-scrolling: touch;
+        -ms-overflow-style: none; /* IE and Edge */
+        scrollbar-width: none; /* Firefox */
+      }
+      .portfolio-filter-scroll:active {
+        cursor: grabbing;
+      }
+      .portfolio-filter-scroll::-webkit-scrollbar {
+        display: none;
+        height: 8px;
+      }
+      .portfolio-filter-scroll .td-portfolio-filter-btn {
+        display: inline-flex;
+        gap: 12px;
+        align-items: center;
+        padding-left: 12px;
+      }
+      .portfolio-filter-scroll button {
+        white-space: nowrap;
+        background: #f1f1f1;
+        color: #111;
+        padding: 9px 14px;
+        font-size: 14px;
+      }
+      @media (min-width: 768px) {
+        .portfolio-filter-scroll {
+          overflow: visible;
+          white-space: normal;
+          padding-bottom: 0;
+          cursor: default;
+        }
+        .portfolio-filter-scroll .td-portfolio-filter-btn {
+          display: flex;
+          justify-content: center;
+          gap: 18px;
+          padding-left: 0;
+        }
+        .portfolio-filter-scroll button {
+          background: transparent;
+          color: inherit;
+          padding: 8px 12px;
+        }
+        .portfolio-filter-scroll button.active {
+          background: #111;
+          color: #fff;
+        }
+      }
+
+      /* grid spacing */
+      .grid {
+        margin-left: -15px;
+        margin-right: -15px;
+      }
+      .grid .col-lg-4 {
+        padding-left: 15px;
+        padding-right: 15px;
+        margin-bottom: 30px;
+      }
+
+      /* header & nav baseline */
+      .header-area {
+        padding: 18px 0;
+        background: #fff;
+        position: sticky;
+        top: 0;
+        z-index: 999;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+      }
+      .header-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 18px;
+      }
+      .logo img {
+        height: 42px;
+        display: block;
+      }
+      nav .nav-menu {
+        list-style: none;
+        display: flex;
+        gap: 18px;
+        align-items: center;
+        margin: 0;
+        padding: 0;
+      }
+      nav .nav-menu li a {
+        text-decoration: none;
+        color: #111;
+        font-weight: 600;
+        padding: 6px 8px;
+      }
+      .cta-button {
+        background: #111;
+        color: #fff;
+        padding: 8px 14px;
+        border-radius: 8px;
+      }
+
+      /* mobile menu */
+      .mobile-toggle {
+        display: none;
+        background: transparent;
+        border: 0;
+      }
+      .mobile-menu {
+        display: none;
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 320px;
+        height: 100vh;
+        background: #fff;
+        box-shadow: -8px 0 24px rgba(0, 0, 0, 0.1);
+        padding: 30px;
+        z-index: 1000;
+      }
+      .mobile-menu .close-menu {
+        background: transparent;
+        border: 0;
+        font-size: 28px;
+        position: absolute;
+        top: 10px;
+        right: 14px;
+        cursor: pointer;
+      }
+      .overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.45);
+        z-index: 999;
+      }
+      @media (max-width: 991px) {
+        nav .nav-menu {
+          display: none;
+        }
+        .mobile-toggle {
+          display: inline-block;
+        }
+      }
+
+      /* footer baseline */
+      footer .td-footer-area {
+        background: #0b0b0b;
+        color: #fff;
+        padding: 60px 0;
+      }
+      footer .td-footer-area a {
+        color: #fff;
+        text-decoration: none;
+      }
+
+      /* ==========================
+         LIGHTBOX + THUMBNAILS
+         ========================== */
+
+      /* overlay */
+      #lightboxOverlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.95);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 99999;
+        padding: 20px;
+      }
+
+      /* content wrapper: main preview + thumbnails */
+      #lightboxContent {
+        width: 100%;
+        max-width: 1100px;
+        max-height: 90vh;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        position: relative;
+        align-items: center;
+        justify-content: center;
+      }
+
+      /* main preview area */
+      .lb-main {
+        width: 100%;
+        max-height: 78vh;
+        background: transparent;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+      }
+      .lb-main img,
+      .lb-main video {
+        width: 100%;
+        height: auto;
+        max-height: 78vh;
+        border-radius: 10px;
+        object-fit: contain;
+      }
+
+      /* tiny film-strip thumbnails row */
+      .lb-thumbs {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        overflow-x: auto;
+        padding: 8px 6px;
+        -webkit-overflow-scrolling: touch;
+      }
+      .lb-thumbs::-webkit-scrollbar {
+        height: 8px;
+      }
+      .lb-thumb {
+        flex: 0 0 auto;
+        width: 94px; /* film-strip small thumb width */
+        height: 56px; /* small fixed height (film-strip feel) */
+        border-radius: 6px;
+        overflow: hidden;
+        background: #111;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        cursor: pointer;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+        border: 2px solid transparent;
+      }
+      .lb-thumb img,
+      .lb-thumb video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+
+      /* highlight active thumbnail */
+      .lb-thumb.active {
+        border-color: #fff;
+        transform: scale(1.03);
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+      }
+
+      /* navigation, close and loader */
+      #lightboxClose {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        font-size: 34px;
+        color: #fff;
+        cursor: pointer;
+        background: rgba(255, 255, 255, 0.06);
+        padding: 6px 12px;
+        border-radius: 8px;
+        z-index: 100010;
+      }
+      .lb-nav {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 34px;
+        color: white;
+        cursor: pointer;
+        padding: 10px 14px;
+        background: rgba(255, 255, 255, 0.04);
+        border-radius: 50%;
+        user-select: none;
+        z-index: 100010;
+      }
+      #lbPrev {
+        left: 18px;
+      }
+      #lbNext {
+        right: 18px;
+      }
+      @media (max-width: 600px) {
+        #lightboxClose {
+          font-size: 26px;
+          top: 8px;
+          right: 8px;
+        }
+        .lb-nav {
+          font-size: 26px;
+          padding: 8px 10px;
+        }
+        .lb-thumb {
+          width: 76px;
+          height: 48px;
+        }
+      }
+
+      .lb-loader {
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        border: 4px solid rgba(255, 255, 255, 0.12);
+        border-top-color: #fff;
+        animation: spin 1s linear infinite;
+        position: absolute;
+        z-index: 100005;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      /* accessibility focus rings */
+      button:focus,
+      a:focus,
+      .lb-thumb:focus {
+        outline: 3px solid rgba(255, 255, 255, 0.08);
+        outline-offset: 2px;
+      }
+    </style>
     <link
       rel="shortcut icon"
       type="image/x-icon"
@@ -184,117 +588,604 @@
                   </div>
                 </div>
               </div>
-              <div class="grid row">
-                <!-- image 1 -->
+              <div class="grid row" id="portfolioGrid">
+                <!-- 3d architecture images start -->
+                <!-- Item 1 -->
                 <div class="col-lg-4 col-md-6 grid-item prof prof1 mb-30">
-                  <div class="td-portfolio-filter-wrapper p-relative">
-                    <div class="td-portfolio-filter-thumb fix">
+                  <div
+                    class="td-portfolio-filter-wrapper"
+                    tabindex="0"
+                    role="button"
+                    aria-label="Open Project Title 1"
+                  >
+                    <div class="td-portfolio-filter-thumb">
                       <img
-                        class="w-100"
-                        src="assets/img/portfolio/graphics/1.jpg"
-                        alt="project"
+                        data-src="assets/img/portfolio/3D Architecture/1.jpg"
+                        alt="Project 1"
+                        class="lazy"
                       />
                     </div>
                   </div>
                 </div>
-                <!-- image 2 -->
-                <div class="col-lg-4 col-md-6 grid-item prof2 prof4 mb-30">
-                  <div class="td-portfolio-filter-wrapper p-relative">
-                    <div class="td-portfolio-filter-thumb fix">
-                      <img
-                        class="w-100"
-                        src="assets/img/portfolio/graphics/2.jpg"
-                        alt="project"
-                      />
-                    </div>
-                  </div>
-                </div>
-                <!-- image 3 -->
-                <div class="col-lg-4 col-md-6 grid-item prof1 prof3 mb-30">
-                  <div class="td-portfolio-filter-wrapper p-relative">
-                    <div class="td-portfolio-filter-thumb fix">
-                      <img
-                        class="w-100"
-                        src="assets/img/portfolio/graphics/3.jpg"
-                        alt="project"
-                      />
-                    </div>
-                  </div>
-                </div>
-                <!-- image 4 -->
-                <div class="col-lg-4 col-md-6 grid-item prof3 prof1 mb-30">
-                  <div class="td-portfolio-filter-wrapper p-relative">
-                    <div class="td-portfolio-filter-thumb fix">
-                      <img
-                        class="w-100"
-                        src="assets/img/portfolio/graphics/6.jpg"
-                        alt="project"
-                      />
-                    </div>
-                  </div>
-                </div>
-                <!-- image 5 -->
-                <div class="col-lg-4 col-md-6 grid-item prof2 prof4 mb-30">
-                  <div class="td-portfolio-filter-wrapper p-relative">
-                    <div class="td-portfolio-filter-thumb fix">
-                      <img
-                        class="w-100"
-                        src="assets/img/portfolio/graphics/7.jpg"
-                        alt="project"
-                      />
-                    </div>
-                  </div>
-                </div>
-                <!-- image 6 -->
+                <!-- Item 2 -->
                 <div class="col-lg-4 col-md-6 grid-item prof prof1 mb-30">
-                  <div class="td-portfolio-filter-wrapper p-relative">
-                    <div class="td-portfolio-filter-thumb fix">
+                  <div
+                    class="td-portfolio-filter-wrapper"
+                    tabindex="0"
+                    role="button"
+                    aria-label="Open Project Title 1"
+                  >
+                    <div class="td-portfolio-filter-thumb">
                       <img
-                        class="w-100"
-                        src="assets/img/portfolio/graphics/8.jpg"
-                        alt="project"
+                        data-src="assets/img/portfolio/3D Architecture/2.jpg"
+                        alt="Project 1"
+                        class="lazy"
                       />
                     </div>
                   </div>
                 </div>
-                <!-- image 7 -->
-                <div class="col-lg-4 col-md-6 grid-item prof3 prof1 mb-30">
-                  <div class="td-portfolio-filter-wrapper p-relative">
-                    <div class="td-portfolio-filter-thumb fix">
+                <!-- Item 3 -->
+                <div class="col-lg-4 col-md-6 grid-item prof prof1 mb-30">
+                  <div
+                    class="td-portfolio-filter-wrapper"
+                    tabindex="0"
+                    role="button"
+                    aria-label="Open Project Title 1"
+                  >
+                    <div class="td-portfolio-filter-thumb">
                       <img
-                        class="w-100"
-                        src="assets/img/portfolio/graphics/9.jpg"
-                        alt="project"
+                        data-src="assets/img/portfolio/3D Architecture/3.jpg"
+                        alt="Project 1"
+                        class="lazy"
                       />
                     </div>
                   </div>
                 </div>
-                <!-- image 8 -->
-                <div class="col-lg-4 col-md-6 grid-item prof2 prof4 mb-30">
-                  <div class="td-portfolio-filter-wrapper p-relative">
-                    <div class="td-portfolio-filter-thumb fix">
+                <!-- Item 4 -->
+                <div class="col-lg-4 col-md-6 grid-item prof prof1 mb-30">
+                  <div
+                    class="td-portfolio-filter-wrapper"
+                    tabindex="0"
+                    role="button"
+                    aria-label="Open Project Title 1"
+                  >
+                    <div class="td-portfolio-filter-thumb">
+                      <img
+                        data-src="assets/img/portfolio/3D Architecture/4.jpg"
+                        alt="Project 1"
+                        class="lazy"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <!-- Item 5 -->
+                <div class="col-lg-4 col-md-6 grid-item prof prof1 mb-30">
+                  <div
+                    class="td-portfolio-filter-wrapper"
+                    tabindex="0"
+                    role="button"
+                    aria-label="Open Project Title 1"
+                  >
+                    <div class="td-portfolio-filter-thumb">
+                      <img
+                        data-src="assets/img/portfolio/3D Architecture/5.jpg"
+                        alt="Project 1"
+                        class="lazy"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <!-- 3d architecture images end -->
+                <!-- cgi videos start -->
+                <!-- Item 1 -->
+                <div class="col-lg-4 col-md-6 grid-item prof2 mb-30">
+                  <div
+                    class="td-portfolio-filter-wrapper"
+                    tabindex="0"
+                    role="button"
+                    aria-label="Open Motion Ad 2"
+                  >
+                    <div class="td-portfolio-filter-thumb">
                       <video
-                        autoplay
+                        class="lazy-video"
+                        autoplay="true"
+                        muted
                         loop
-                        class="w-100"
-                        src="assets/img/portfolio/motion/1.mp4"
-                        alt="project"
-                      />
+                        playsinline
+                        preload="metadata"
+                        data-src="assets/img/portfolio/CGI/1.mp4"
+                        data-thumb="assets/img/portfolio/CGI/thumbnail_1.jpg"
+                      ></video>
                     </div>
                   </div>
                 </div>
-                <!-- image 9 -->
+                <!-- Item 2 -->
+                <div class="col-lg-4 col-md-6 grid-item prof2 mb-30">
+                  <div
+                    class="td-portfolio-filter-wrapper"
+                    tabindex="0"
+                    role="button"
+                    aria-label="Open Motion Ad 2"
+                  >
+                    <div class="td-portfolio-filter-thumb">
+                      <video
+                        class="lazy-video"
+                        autoplay="true"
+                        muted
+                        loop
+                        playsinline
+                        preload="metadata"
+                        data-src="assets/img/portfolio/CGI/2.mp4"
+                        data-thumb="assets/img/portfolio/CGI/thumbnail_2.jpg"
+                      ></video>
+                    </div>
+                  </div>
+                </div>
+                <!-- Item 3 -->
+                <div class="col-lg-4 col-md-6 grid-item prof2 mb-30">
+                  <div
+                    class="td-portfolio-filter-wrapper"
+                    tabindex="0"
+                    role="button"
+                    aria-label="Open Motion Ad 2"
+                  >
+                    <div class="td-portfolio-filter-thumb">
+                      <video
+                        class="lazy-video"
+                        autoplay="true"
+                        muted
+                        loop
+                        playsinline
+                        preload="metadata"
+                        data-src="assets/img/portfolio/CGI/3.mp4"
+                        data-thumb="assets/img/portfolio/CGI/thumbnail_3.jpg"
+                      ></video>
+                    </div>
+                  </div>
+                </div>
+                <!-- Item 4 -->
+                <div class="col-lg-4 col-md-6 grid-item prof2 mb-30">
+                  <div
+                    class="td-portfolio-filter-wrapper"
+                    tabindex="0"
+                    role="button"
+                    aria-label="Open Motion Ad 2"
+                  >
+                    <div class="td-portfolio-filter-thumb">
+                      <video
+                        class="lazy-video"
+                        autoplay="true"
+                        muted
+                        loop
+                        playsinline
+                        preload="metadata"
+                        data-src="assets/img/portfolio/CGI/4.mp4"
+                        data-thumb="assets/img/portfolio/CGI/thumbnail_4.jpg"
+                      ></video>
+                    </div>
+                  </div>
+                </div>
+                <!-- cgi videos end -->
+                <!-- set design images start -->
+                <!-- Item 1 -->
                 <div class="col-lg-4 col-md-6 grid-item prof prof1 mb-30">
-                  <div class="td-portfolio-filter-wrapper p-relative">
-                    <div class="td-portfolio-filter-thumb fix">
+                  <div
+                    class="td-portfolio-filter-wrapper"
+                    tabindex="0"
+                    role="button"
+                    aria-label="Open Project Title 1"
+                  >
+                    <div class="td-portfolio-filter-thumb">
                       <img
-                        class="w-100"
-                        src="assets/img/portfolio/graphics/10.jpg"
-                        alt="project"
+                        data-src="assets/img/portfolio/Set design/1.jpg"
+                        alt="Project 1"
+                        class="lazy"
                       />
                     </div>
                   </div>
                 </div>
+                <!-- Item 2 -->
+                <div class="col-lg-4 col-md-6 grid-item prof prof1 mb-30">
+                  <div
+                    class="td-portfolio-filter-wrapper"
+                    tabindex="0"
+                    role="button"
+                    aria-label="Open Project Title 1"
+                  >
+                    <div class="td-portfolio-filter-thumb">
+                      <img
+                        data-src="assets/img/portfolio/Set design/2.jpg"
+                        alt="Project 1"
+                        class="lazy"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <!-- Item 3 -->
+                <div class="col-lg-4 col-md-6 grid-item prof prof1 mb-30">
+                  <div
+                    class="td-portfolio-filter-wrapper"
+                    tabindex="0"
+                    role="button"
+                    aria-label="Open Project Title 1"
+                  >
+                    <div class="td-portfolio-filter-thumb">
+                      <img
+                        data-src="assets/img/portfolio/Set design/3.jpg"
+                        alt="Project 1"
+                        class="lazy"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <!-- Item 4 -->
+                <div class="col-lg-4 col-md-6 grid-item prof prof1 mb-30">
+                  <div
+                    class="td-portfolio-filter-wrapper"
+                    tabindex="0"
+                    role="button"
+                    aria-label="Open Project Title 1"
+                  >
+                    <div class="td-portfolio-filter-thumb">
+                      <img
+                        data-src="assets/img/portfolio/Set design/4.jpg"
+                        alt="Project 1"
+                        class="lazy"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <!-- Item 5 -->
+                <div class="col-lg-4 col-md-6 grid-item prof prof1 mb-30">
+                  <div
+                    class="td-portfolio-filter-wrapper"
+                    tabindex="0"
+                    role="button"
+                    aria-label="Open Project Title 1"
+                  >
+                    <div class="td-portfolio-filter-thumb">
+                      <img
+                        data-src="assets/img/portfolio/Set design/5.jpg"
+                        alt="Project 1"
+                        class="lazy"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <!-- Item 6 -->
+                <div class="col-lg-4 col-md-6 grid-item prof prof1 mb-30">
+                  <div
+                    class="td-portfolio-filter-wrapper"
+                    tabindex="0"
+                    role="button"
+                    aria-label="Open Project Title 1"
+                  >
+                    <div class="td-portfolio-filter-thumb">
+                      <img
+                        data-src="assets/img/portfolio/Set design/6.jpg"
+                        alt="Project 1"
+                        class="lazy"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <!-- Item 7 -->
+                <div class="col-lg-4 col-md-6 grid-item prof prof1 mb-30">
+                  <div
+                    class="td-portfolio-filter-wrapper"
+                    tabindex="0"
+                    role="button"
+                    aria-label="Open Project Title 1"
+                  >
+                    <div class="td-portfolio-filter-thumb">
+                      <img
+                        data-src="assets/img/portfolio/Set design/7.jpg"
+                        alt="Project 1"
+                        class="lazy"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <!-- Item 8 -->
+                <div class="col-lg-4 col-md-6 grid-item prof prof1 mb-30">
+                  <div
+                    class="td-portfolio-filter-wrapper"
+                    tabindex="0"
+                    role="button"
+                    aria-label="Open Project Title 1"
+                  >
+                    <div class="td-portfolio-filter-thumb">
+                      <img
+                        data-src="assets/img/portfolio/Set design/8.jpg"
+                        alt="Project 1"
+                        class="lazy"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <!-- Item 9 -->
+                <div class="col-lg-4 col-md-6 grid-item prof prof1 mb-30">
+                  <div
+                    class="td-portfolio-filter-wrapper"
+                    tabindex="0"
+                    role="button"
+                    aria-label="Open Project Title 1"
+                  >
+                    <div class="td-portfolio-filter-thumb">
+                      <img
+                        data-src="assets/img/portfolio/Set design/9.jpg"
+                        alt="Project 1"
+                        class="lazy"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <!-- Item 10 -->
+                <div class="col-lg-4 col-md-6 grid-item prof prof1 mb-30">
+                  <div
+                    class="td-portfolio-filter-wrapper"
+                    tabindex="0"
+                    role="button"
+                    aria-label="Open Project Title 1"
+                  >
+                    <div class="td-portfolio-filter-thumb">
+                      <img
+                        data-src="assets/img/portfolio/Set design/10.jpg"
+                        alt="Project 1"
+                        class="lazy"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <!-- Item 11 -->
+                <div class="col-lg-4 col-md-6 grid-item prof prof1 mb-30">
+                  <div
+                    class="td-portfolio-filter-wrapper"
+                    tabindex="0"
+                    role="button"
+                    aria-label="Open Project Title 1"
+                  >
+                    <div class="td-portfolio-filter-thumb">
+                      <img
+                        data-src="assets/img/portfolio/Set design/11.jpg"
+                        alt="Project 1"
+                        class="lazy"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <!-- Item 12 -->
+                <div class="col-lg-4 col-md-6 grid-item prof prof1 mb-30">
+                  <div
+                    class="td-portfolio-filter-wrapper"
+                    tabindex="0"
+                    role="button"
+                    aria-label="Open Project Title 1"
+                  >
+                    <div class="td-portfolio-filter-thumb">
+                      <img
+                        data-src="assets/img/portfolio/Set design/12.jpg"
+                        alt="Project 1"
+                        class="lazy"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <!-- Item 13 -->
+                <div class="col-lg-4 col-md-6 grid-item prof prof1 mb-30">
+                  <div
+                    class="td-portfolio-filter-wrapper"
+                    tabindex="0"
+                    role="button"
+                    aria-label="Open Project Title 1"
+                  >
+                    <div class="td-portfolio-filter-thumb">
+                      <img
+                        data-src="assets/img/portfolio/Set design/13.jpg"
+                        alt="Project 1"
+                        class="lazy"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <!-- Item 14 -->
+                <div class="col-lg-4 col-md-6 grid-item prof prof1 mb-30">
+                  <div
+                    class="td-portfolio-filter-wrapper"
+                    tabindex="0"
+                    role="button"
+                    aria-label="Open Project Title 1"
+                  >
+                    <div class="td-portfolio-filter-thumb">
+                      <img
+                        data-src="assets/img/portfolio/Set design/14.jpg"
+                        alt="Project 1"
+                        class="lazy"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <!-- Item 15 -->
+                <div class="col-lg-4 col-md-6 grid-item prof prof1 mb-30">
+                  <div
+                    class="td-portfolio-filter-wrapper"
+                    tabindex="0"
+                    role="button"
+                    aria-label="Open Project Title 1"
+                  >
+                    <div class="td-portfolio-filter-thumb">
+                      <img
+                        data-src="assets/img/portfolio/Set design/15.jpg"
+                        alt="Project 1"
+                        class="lazy"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <!-- Item 16 -->
+                <div class="col-lg-4 col-md-6 grid-item prof prof1 mb-30">
+                  <div
+                    class="td-portfolio-filter-wrapper"
+                    tabindex="0"
+                    role="button"
+                    aria-label="Open Project Title 1"
+                  >
+                    <div class="td-portfolio-filter-thumb">
+                      <img
+                        data-src="assets/img/portfolio/Set design/16.jpg"
+                        alt="Project 1"
+                        class="lazy"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <!-- Item 17 -->
+                <div class="col-lg-4 col-md-6 grid-item prof prof1 mb-30">
+                  <div
+                    class="td-portfolio-filter-wrapper"
+                    tabindex="0"
+                    role="button"
+                    aria-label="Open Project Title 1"
+                  >
+                    <div class="td-portfolio-filter-thumb">
+                      <img
+                        data-src="assets/img/portfolio/Set design/17.jpg"
+                        alt="Project 1"
+                        class="lazy"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <!-- Item 18 -->
+                <div class="col-lg-4 col-md-6 grid-item prof prof1 mb-30">
+                  <div
+                    class="td-portfolio-filter-wrapper"
+                    tabindex="0"
+                    role="button"
+                    aria-label="Open Project Title 1"
+                  >
+                    <div class="td-portfolio-filter-thumb">
+                      <img
+                        data-src="assets/img/portfolio/Set design/18.jpg"
+                        alt="Project 1"
+                        class="lazy"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <!-- set design images end -->
+                <!-- motion graphics videos start -->
+                <!-- Item 1 -->
+                <div class="col-lg-4 col-md-6 grid-item prof2 mb-30">
+                  <div
+                    class="td-portfolio-filter-wrapper"
+                    tabindex="0"
+                    role="button"
+                    aria-label="Open Motion Ad 2"
+                  >
+                    <div class="td-portfolio-filter-thumb">
+                      <video
+                        class="lazy-video"
+                        autoplay="true"
+                        muted
+                        loop
+                        playsinline
+                        preload="metadata"
+                        data-src="assets/img/portfolio/Motion graphics/1.mp4"
+                        data-thumb="assets/img/portfolio/Motion graphics/thumbnail_1.jpg"
+                      ></video>
+                    </div>
+                  </div>
+                </div>
+                <!-- Item 2 -->
+                <div class="col-lg-4 col-md-6 grid-item prof2 mb-30">
+                  <div
+                    class="td-portfolio-filter-wrapper"
+                    tabindex="0"
+                    role="button"
+                    aria-label="Open Motion Ad 2"
+                  >
+                    <div class="td-portfolio-filter-thumb">
+                      <video
+                        class="lazy-video"
+                        autoplay="true"
+                        muted
+                        loop
+                        playsinline
+                        preload="metadata"
+                        data-src="assets/img/portfolio/Motion graphics/2.mp4"
+                        data-thumb="assets/img/portfolio/Motion graphics/thumbnail_2.jpg"
+                      ></video>
+                    </div>
+                  </div>
+                </div>
+                <!-- Item 3 -->
+                <div class="col-lg-4 col-md-6 grid-item prof2 mb-30">
+                  <div
+                    class="td-portfolio-filter-wrapper"
+                    tabindex="0"
+                    role="button"
+                    aria-label="Open Motion Ad 2"
+                  >
+                    <div class="td-portfolio-filter-thumb">
+                      <video
+                        class="lazy-video"
+                        autoplay="true"
+                        muted
+                        playsinline
+                        preload="metadata"
+                        data-src="assets/img/portfolio/Motion graphics/3.mp4"
+                        data-thumb="assets/img/portfolio/Motion graphics/thumbnail_3.jpg"
+                      ></video>
+                    </div>
+                  </div>
+                </div>
+                <!-- Item 4 -->
+                <div class="col-lg-4 col-md-6 grid-item prof2 mb-30">
+                  <div
+                    class="td-portfolio-filter-wrapper"
+                    tabindex="0"
+                    role="button"
+                    aria-label="Open Motion Ad 2"
+                  >
+                    <div class="td-portfolio-filter-thumb">
+                      <video
+                        class="lazy-video"
+                        autoplay="true"
+                        muted
+                        loop
+                        playsinline
+                        preload="metadata"
+                        data-src="assets/img/portfolio/Motion graphics/4.mp4"
+                        data-thumb="assets/img/portfolio/Motion graphics/thumbnail_4.jpg"
+                      ></video>
+                    </div>
+                  </div>
+                </div>
+                <!-- Item 5 -->
+                <div class="col-lg-4 col-md-6 grid-item prof2 mb-30">
+                  <div
+                    class="td-portfolio-filter-wrapper"
+                    tabindex="0"
+                    role="button"
+                    aria-label="Open Motion Ad 2"
+                  >
+                    <div class="td-portfolio-filter-thumb">
+                      <video
+                        class="lazy-video"
+                        autoplay="true"
+                        muted
+                        loop
+                        playsinline
+                        preload="metadata"
+                        data-src="assets/img/portfolio/Motion graphics/5.mp4"
+                        data-thumb="assets/img/portfolio/Motion graphics/thumbnail_5.jpg"
+                      ></video>
+                    </div>
+                  </div>
+                </div>
+                <!-- motion graphic videos end -->
+                <!-- Add more items as needed -->
               </div>
 
               <div class="row">
@@ -318,175 +1209,113 @@
           </div>
           <!-- td-portfolio-area-end -->
         </main>
+        <!-- LIGHTBOX OVERLAY: MAIN + THUMBNAILS -->
+        <div id="lightboxOverlay" aria-hidden="true">
+          <button id="lightboxClose" aria-label="Close lightbox">×</button>
+          <button id="lbPrev" class="lb-nav" aria-label="Previous">❮</button>
+          <button id="lbNext" class="lb-nav" aria-label="Next">❯</button>
 
+          <!-- lightboxContent now contains .lb-main (main preview) and .lb-thumbs (film-strip) -->
+          <div id="lightboxContent" role="dialog" aria-modal="true">
+            <div
+              class="lb-main"
+              id="lbMainArea"
+              tabindex="0"
+              aria-live="polite"
+            >
+              <!-- main preview is injected by JS (image or video element) -->
+            </div>
+
+            <!-- thumbnails film-strip -->
+            <div
+              class="lb-thumbs"
+              id="lbThumbs"
+              role="toolbar"
+              aria-label="Gallery thumbnails"
+            >
+              <!-- thumbnails injected by JS -->
+            </div>
+
+            <div id="lbLoader" class="lb-loader" style="display: none"></div>
+          </div>
+        </div>
         <!-- footer-area-start -->
         <footer>
-          <div class="td-footer-area pt-120 black-bg">
+          <br />
+          <br />
+          <div class="td-footer-area td-footer-2-wrap">
             <div class="container">
               <div class="row">
-                <div class="col-lg-3 col-md-6 col-sm-6">
-                  <div class="td-footer-logo mb-30">
-                    <a href="index.html">
-                      <img src="assets/img/logo/logo-white.png" alt="" />
-                    </a>
+                <div class="col-lg-6 mb-30">
+                  <div class="td-footer-3-widget">
+                    <h2 class="td-footer-2-bigtitle">
+                      Entrust design<br />
+                      to professionals
+                    </h2>
                   </div>
                 </div>
-                <div class="col-lg-2 col-md-6 col-sm-6">
-                  <div class="td-footer-widget mb-30">
-                    <h3 class="td-footer-title mb-30">Quick Link</h3>
-                    <ul class="td-footer-widget-list">
-                      <li><a href="#">About</a></li>
-                      <li><a href="#">Team</a></li>
-                      <li><a href="#">Project</a></li>
-                      <li><a href="#">Fact</a></li>
-                      <li><a href="#">Contact</a></li>
-                    </ul>
-                  </div>
-                </div>
-                <div class="col-lg-3 col-md-6 col-sm-6">
-                  <div class="td-footer-widget ml-80 mb-30">
-                    <h3 class="td-footer-title mb-30">Others</h3>
-                    <ul class="td-footer-widget-list">
-                      <li><a href="#">License</a></li>
-                      <li><a href="#"> Style Guide</a></li>
-                      <li><a href="#">Change Log</a></li>
-                      <li><a href="#">Error</a></li>
-                    </ul>
-                  </div>
-                </div>
-                <div class="col-lg-4 col-md-6 col-sm-6">
-                  <div class="td-footer-widget mr-30 mb-30">
-                    <h3 class="td-footer-title mb-30">Address</h3>
-                    <a class="td-footer-location mb-45 d-inline-block" href="#"
-                      >XYZ Times Sq, New York, 10000<br />
-                      United States</a
+                <div class="col-lg-3 col-md-6 col-sm-6 mb-30">
+                  <div class="td-footer-3-widget">
+                    <h4 class="td-footer-3-title mb-15">India</h4>
+                    <a class="links mb-40 d-inline-block" href="#"
+                      >Ranip —<br />
+                      Ahmedabad, Gujarat</a
                     >
-                    <div class="td-footer-form p-relative">
-                      <form action="#">
-                        <input type="text" placeholder="example@gmail.com" />
-                        <button type="submit">
-                          <svg
-                            width="12"
-                            height="12"
-                            viewBox="0 0 12 12"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <path
-                              d="M1 11L11 1"
-                              stroke="#1C1D1F"
-                              stroke-width="1.5"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                            />
-                            <path
-                              d="M1 1H11V11"
-                              stroke="#1C1D1F"
-                              stroke-width="1.5"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                            />
-                          </svg>
-                        </button>
-                      </form>
+
+                    <div class="td-footer-3-social">
+                      <a href="http://www.facebook.com/PSQUAERE?mibextid=ZbWKwL"
+                        ><i class="fa-brands fa-facebook-f"></i
+                      ></a>
+                      <a
+                        href="https://www.linkedin.com/company/the-psquare-studio/?viewAsMember=true"
+                        ><i class="fa-brands fa-linkedin-in"></i
+                      ></a>
+                      <a href="https://www.instagram.com/thepsquarestudio/"
+                        ><i class="fa-brands fa-instagram"></i
+                      ></a>
+                      <a
+                        href="https://api.whatsapp.com/send/?phone=%2B919898709490&text&type=phone_number&app_absent=0"
+                        ><i class="fa-brands fa-whatsapp"></i
+                      ></a>
                     </div>
                   </div>
                 </div>
-                <div class="col-12">
-                  <div class="td-footer-bottom mt-45">
-                    <div class="row align-items-center">
-                      <div class="col-lg-6 col-md-8">
-                        <div class="td-footer-copyright mb-20">
-                          <p>
-                            © 2025 <a href="#">Parody.</a> All Rights Reserved.
-                          </p>
-                        </div>
-                      </div>
-                      <div class="col-lg-6 col-md-4">
-                        <div class="td-footer-social text-md-end mb-20">
-                          <a href="#">
-                            <svg
-                              width="13"
-                              height="13"
-                              viewBox="0 0 16 16"
-                              fill="none"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                d="M9.33161 6.77486L15.1688 0H13.7856L8.71722 5.8826L4.66907 0H0L6.12155 8.89546L0 16H1.38336L6.73581 9.78785L11.0109 16H15.68L9.33148 6.77486H9.33187H9.33161ZM7.43696 8.97374L6.81669 8.088L1.88171 1.03969H4.00634L7.98902 6.72789L8.60929 7.61362L13.7863 15.0074H11.6616L7.43709 8.974V8.97361L7.43696 8.97374Z"
-                                fill="currentColor"
-                              />
-                            </svg>
-                          </a>
-                          <a href="#">
-                            <svg
-                              width="17"
-                              height="17"
-                              viewBox="0 0 17 17"
-                              fill="none"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                d="M17 8.5C17 3.80558 13.1944 0 8.5 0C3.80558 0 0 3.80558 0 8.5C0 12.7426 3.10833 16.2591 7.17188 16.8967V10.957H5.01367V8.5H7.17188V6.62734C7.17188 4.49703 8.44087 3.32031 10.3825 3.32031C11.3124 3.32031 12.2852 3.48633 12.2852 3.48633V5.57813H11.2133C10.1574 5.57813 9.82812 6.23334 9.82812 6.90554V8.5H12.1855L11.8087 10.957H9.82812V16.8967C13.8917 16.2591 17 12.7426 17 8.5Z"
-                                fill="currentColor"
-                              />
-                            </svg>
-                          </a>
-                          <a href="#">
-                            <svg
-                              width="16"
-                              height="16"
-                              viewBox="0 0 16 16"
-                              fill="none"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                d="M11.5 1H4.5C2.567 1 1 2.567 1 4.5V11.5C1 13.433 2.567 15 4.5 15H11.5C13.433 15 15 13.433 15 11.5V4.5C15 2.567 13.433 1 11.5 1Z"
-                                stroke="currentColor"
-                                stroke-width="1.5"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                              />
-                              <path
-                                d="M10.7963 7.55921C10.8827 8.14178 10.7832 8.73676 10.5119 9.25952C10.2407 9.78228 9.81148 10.2062 9.28542 10.471C8.75935 10.7358 8.16319 10.8279 7.58173 10.7344C7.00027 10.6408 6.46311 10.3663 6.04667 9.94982C5.63022 9.53338 5.35569 8.99622 5.26213 8.41476C5.16856 7.8333 5.26073 7.23714 5.52551 6.71107C5.79029 6.18501 6.21421 5.75583 6.73697 5.48458C7.25973 5.21333 7.85471 5.11382 8.43728 5.20021C9.03152 5.28833 9.58167 5.56524 10.0065 5.99003C10.4313 6.41482 10.7082 6.96496 10.7963 7.55921Z"
-                                stroke="currentColor"
-                                stroke-width="1.5"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                              />
-                              <path
-                                d="M11.8477 4.15039H11.8577"
-                                stroke="currentColor"
-                                stroke-width="1.5"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                              />
-                            </svg>
-                          </a>
-                          <a href="#">
-                            <svg
-                              width="15"
-                              height="15"
-                              viewBox="0 0 15 15"
-                              fill="none"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                d="M10.2579 4.7373C11.5141 4.7373 12.7188 5.23632 13.6071 6.12458C14.4954 7.01283 14.9944 8.21757 14.9944 9.47375V14.9996H11.8367V9.47375C11.8367 9.05502 11.6704 8.65344 11.3743 8.35736C11.0782 8.06127 10.6767 7.89493 10.2579 7.89493C9.8392 7.89493 9.43762 8.06127 9.14154 8.35736C8.84545 8.65344 8.67911 9.05502 8.67911 9.47375V14.9996H5.52148V9.47375C5.52148 8.21757 6.0205 7.01283 6.90876 6.12458C7.79701 5.23632 9.00174 4.7373 10.2579 4.7373Z"
-                                fill="currentColor"
-                              />
-                              <path
-                                d="M3.15763 5.52734H0V15.0002H3.15763V5.52734Z"
-                                fill="currentColor"
-                              />
-                              <path
-                                d="M1.57881 3.15763C2.45077 3.15763 3.15763 2.45077 3.15763 1.57881C3.15763 0.706859 2.45077 0 1.57881 0C0.706859 0 0 0.706859 0 1.57881C0 2.45077 0.706859 3.15763 1.57881 3.15763Z"
-                                fill="currentColor"
-                              />
-                            </svg>
-                          </a>
-                        </div>
-                      </div>
+                <div class="col-lg-3 col-md-6 col-sm-6 mb-30">
+                  <div class="td-footer-3-widget">
+                    <h4 class="td-footer-3-title mb-15">Say hello!</h4>
+                    <a class="links links-3 d-block mb-5" href="#"
+                      >thepsquarestudio25@gmail.com</a
+                    >
+                    <a class="links-2" href="tel:+1234567890"
+                      >+91 98987 09490</a
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="container">
+              <div class="td-footer-2-border mt-60">
+                <div class="row align-items-center">
+                  <div class="col-lg-8">
+                    <div class="td-footer-3-menu mb-10">
+                      <ul>
+                        <li>
+                          <a href="about.html">Who We Are</a>
+                        </li>
+                        <li>
+                          <a href="portfolio-two-columns.html">Portfolio</a>
+                        </li>
+                        <li><a href="service.html">Services</a></li>
+                        <!-- <li><a href="#">Blog</a></li> -->
+                        <li><a href="contact.html">Contact</a></li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="col-lg-4">
+                    <div class="td-footer-3-copyright text-lg-end mb-10">
+                      <p>
+                        © 2025 <a href="#">PSQUARE.</a> All Rights Reserved.
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -537,5 +1366,568 @@
     <script src="assets/js/ajax-form.js"></script>
     <!--<< main.Js >>-->
     <script src="assets/js/main.js"></script>
+    <!-- ===========================
+         DRAG SCROLL + ISOTOPE + LAZY + LIGHTBOX (with thumbnails)
+         =========================== -->
+    <script>
+      (function () {
+        // set year
+        const yElem = document.getElementById("yearNow");
+        if (yElem) yElem.textContent = new Date().getFullYear();
+
+        /* -----------------------
+           MOBILE FILTER SCROLL (drag-to-scroll)
+           ----------------------- */
+        const scrollContainer = document.getElementById(
+          "portfolioFilterScroll"
+        );
+        if (scrollContainer) {
+          let isDown = false;
+          let startX;
+          let scrollLeft;
+
+          // Mouse events
+          scrollContainer.addEventListener("mousedown", (e) => {
+            isDown = true;
+            scrollContainer.classList.add("active");
+            startX = e.pageX - scrollContainer.offsetLeft;
+            scrollLeft = scrollContainer.scrollLeft;
+            e.preventDefault();
+          });
+          scrollContainer.addEventListener("mouseleave", () => {
+            isDown = false;
+            scrollContainer.classList.remove("active");
+          });
+          scrollContainer.addEventListener("mouseup", () => {
+            isDown = false;
+            scrollContainer.classList.remove("active");
+          });
+          scrollContainer.addEventListener("mousemove", (e) => {
+            if (!isDown) return;
+            e.preventDefault();
+            const x = e.pageX - scrollContainer.offsetLeft;
+            const walk = (x - startX) * 1.5;
+            scrollContainer.scrollLeft = scrollLeft - walk;
+          });
+
+          // Touch events
+          let touchStartX = 0;
+          let touchScrollLeft = 0;
+          scrollContainer.addEventListener(
+            "touchstart",
+            (e) => {
+              touchStartX = e.touches[0].pageX - scrollContainer.offsetLeft;
+              touchScrollLeft = scrollContainer.scrollLeft;
+            },
+            { passive: true }
+          );
+          scrollContainer.addEventListener(
+            "touchmove",
+            (e) => {
+              const x = e.touches[0].pageX - scrollContainer.offsetLeft;
+              const walk = (x - touchStartX) * 1.2;
+              scrollContainer.scrollLeft = touchScrollLeft - walk;
+            },
+            { passive: true }
+          );
+        }
+
+        /* -----------------------
+           ISOTOPE INIT
+           ----------------------- */
+        function initIsotope() {
+          const grid = document.querySelector("#portfolioGrid");
+          const filterButtons = document.querySelectorAll(
+            ".td-portfolio-filter-btn button"
+          );
+          if (!grid) return;
+
+          imagesLoaded(grid, function () {
+            const iso = new Isotope(grid, {
+              itemSelector: ".grid-item",
+              layoutMode: "masonry",
+              percentPosition: true,
+              masonry: { columnWidth: ".grid-item" },
+            });
+
+            filterButtons.forEach((btn) => {
+              btn.addEventListener("click", function () {
+                const filterValue = btn.getAttribute("data-filter") || "*";
+                iso.arrange({ filter: filterValue });
+
+                filterButtons.forEach((b) => {
+                  b.classList.remove("active");
+                  b.setAttribute("aria-pressed", "false");
+                });
+                btn.classList.add("active");
+                btn.setAttribute("aria-pressed", "true");
+
+                // center clicked filter button on mobile
+                if (scrollContainer && window.innerWidth < 768) {
+                  const btnRect = btn.getBoundingClientRect();
+                  const containerRect = scrollContainer.getBoundingClientRect();
+                  const offset =
+                    btnRect.left -
+                    containerRect.left -
+                    containerRect.width / 2 +
+                    btnRect.width / 2;
+                  scrollContainer.scrollBy({
+                    left: offset,
+                    behavior: "smooth",
+                  });
+                }
+              });
+            });
+
+            window.addEventListener("resize", function () {
+              iso.layout();
+            });
+          });
+        }
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", initIsotope);
+        } else {
+          initIsotope();
+        }
+
+        /* -----------------------
+           MOBILE MENU
+           ----------------------- */
+        const mobileToggle = document.getElementById("mobileToggle");
+        const mobileMenu = document.getElementById("mobileMenu");
+        const closeMenu = document.getElementById("closeMenu");
+        const overlay = document.getElementById("overlay");
+        function openMobileMenu() {
+          if (mobileMenu) {
+            mobileMenu.style.display = "block";
+            mobileMenu.setAttribute("aria-hidden", "false");
+          }
+          if (overlay) overlay.style.display = "block";
+          if (mobileToggle) mobileToggle.setAttribute("aria-expanded", "true");
+        }
+        function closeMobile() {
+          if (mobileMenu) {
+            mobileMenu.style.display = "none";
+            mobileMenu.setAttribute("aria-hidden", "true");
+          }
+          if (overlay) overlay.style.display = "none";
+          if (mobileToggle) mobileToggle.setAttribute("aria-expanded", "false");
+        }
+        if (mobileToggle)
+          mobileToggle.addEventListener("click", openMobileMenu);
+        if (closeMenu) closeMenu.addEventListener("click", closeMobile);
+        if (overlay) overlay.addEventListener("click", closeMobile);
+
+        // Preloader hide
+        window.addEventListener("load", function () {
+          const pre = document.getElementById("preloader");
+          if (pre) pre.style.display = "none";
+        });
+
+        /* ======================
+           LAZY LOADING
+           ====================== */
+        const lazyImages = [].slice.call(document.querySelectorAll("img.lazy"));
+        const lazyVideos = [].slice.call(
+          document.querySelectorAll("video.lazy-video")
+        );
+
+        if ("IntersectionObserver" in window) {
+          const lazyImageObserver = new IntersectionObserver(
+            function (entries, observer) {
+              entries.forEach(function (entry) {
+                if (entry.isIntersecting) {
+                  const img = entry.target;
+                  const src = img.dataset.src;
+                  if (src) {
+                    img.src = src;
+                    img.removeAttribute("data-src");
+                  }
+                  img.classList.remove("lazy");
+                  lazyImageObserver.unobserve(img);
+                }
+              });
+            },
+            { rootMargin: "200px 0px" }
+          );
+
+          lazyImages.forEach(function (img) {
+            lazyImageObserver.observe(img);
+          });
+
+          const lazyVideoObserver = new IntersectionObserver(
+            function (entries, observer) {
+              entries.forEach(function (entry) {
+                if (entry.isIntersecting) {
+                  const video = entry.target;
+                  const src = video.dataset.src;
+                  if (src) {
+                    const source = document.createElement("source");
+                    source.src = src;
+                    source.type = "video/mp4";
+                    video.appendChild(source);
+                  }
+                  video.load();
+                  video.classList.remove("lazy-video");
+                  lazyVideoObserver.unobserve(video);
+                }
+              });
+            },
+            { rootMargin: "400px 0px" }
+          );
+
+          lazyVideos.forEach(function (video) {
+            lazyVideoObserver.observe(video);
+          });
+        } else {
+          // Fallback: load all immediately
+          lazyImages.forEach(function (img) {
+            img.src = img.dataset.src;
+            img.classList.remove("lazy");
+          });
+          lazyVideos.forEach(function (video) {
+            const source = document.createElement("source");
+            source.src = video.dataset.src;
+            source.type = "video/mp4";
+            video.appendChild(source);
+            video.load();
+            video.classList.remove("lazy-video");
+          });
+        }
+
+        /* ======================
+           LIGHTBOX + THUMBNAILS
+           ====================== */
+        const wrappers = Array.from(
+          document.querySelectorAll(".td-portfolio-filter-wrapper")
+        );
+        const overlayLB = document.getElementById("lightboxOverlay");
+        const lbMainArea = document.getElementById("lbMainArea");
+        const lbThumbs = document.getElementById("lbThumbs");
+        const closeBtn = document.getElementById("lightboxClose");
+        const prevBtn = document.getElementById("lbPrev");
+        const nextBtn = document.getElementById("lbNext");
+        const loader = document.getElementById("lbLoader");
+
+        // Build gallery array using DOM order; capture type and src for both image and video
+        const gallery = wrappers
+          .map((wrap) => {
+            const img = wrap.querySelector("img");
+            const video = wrap.querySelector("video");
+            if (img) {
+              return {
+                type: "image",
+                src: img.dataset ? img.dataset.src || img.src : img.src,
+                thumb: img.dataset ? img.dataset.src || img.src : img.src,
+                alt: img.alt || "",
+              };
+            }
+            if (video) {
+              // try dataset or nested source
+              const vsrc = video.dataset
+                ? video.dataset.src
+                : video.querySelector("source")
+                ? video.querySelector("source").src
+                : "";
+              // find a thumbnail poster if provided else use a static frame (first frame) or a placeholder
+              // If you have poster images for videos, set data-thumb on the video tag in HTML (recommended).
+              const thumb =
+                video.dataset && video.dataset.thumb
+                  ? video.dataset.thumb
+                  : video.dataset && video.dataset.poster
+                  ? video.dataset.poster
+                  : "assets/img/video-thumb-placeholder.jpg";
+              return { type: "video", src: vsrc, thumb: thumb, alt: "" };
+            }
+            return null;
+          })
+          .filter(Boolean);
+
+        // build thumbnails DOM once
+        function buildThumbs() {
+          lbThumbs.innerHTML = "";
+          gallery.forEach((item, i) => {
+            const t = document.createElement("button");
+            t.className = "lb-thumb";
+            t.setAttribute("data-index", i);
+            t.setAttribute("aria-label", "Open item " + (i + 1));
+            t.setAttribute("type", "button");
+            // set tabindex for keyboard navigation
+            t.tabIndex = 0;
+
+            if (item.type === "image") {
+              const im = document.createElement("img");
+              im.src = item.thumb || item.src;
+              im.alt = item.alt || "thumb " + (i + 1);
+              t.appendChild(im);
+            } else {
+              const im = document.createElement("img");
+              im.src = item.thumb || "assets/img/video-thumb-placeholder.jpg";
+              im.alt = "video thumb " + (i + 1);
+              t.appendChild(im);
+            }
+
+            // click handling
+            t.addEventListener("click", (e) => {
+              const idx = parseInt(t.getAttribute("data-index"), 10);
+              showLightbox(idx, true);
+            });
+
+            // keyboard support (Enter / Space)
+            t.addEventListener("keydown", (e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                const idx = parseInt(t.getAttribute("data-index"), 10);
+                showLightbox(idx, true);
+              }
+            });
+
+            lbThumbs.appendChild(t);
+          });
+        }
+
+        let currentIndex = 0;
+
+        function showLoader(show) {
+          loader.style.display = show ? "block" : "none";
+        }
+
+        // Preload helper - also used to preload next/prev
+        function preloadResource(item) {
+          if (!item || !item.src) return;
+          if (item.type === "image") {
+            const link = document.createElement("link");
+            link.rel = "preload";
+            link.as = "image";
+            link.href = item.src;
+            link.dataset.tmp = "true";
+            document.head.appendChild(link);
+          } else if (item.type === "video") {
+            const link = document.createElement("link");
+            link.rel = "preload";
+            link.as = "video";
+            link.href = item.src;
+            link.dataset.tmp = "true";
+            document.head.appendChild(link);
+          }
+        }
+
+        function clearPreloads() {
+          document
+            .querySelectorAll("link[data-tmp]")
+            .forEach((n) => n.remove());
+        }
+
+        // render main preview depending on index
+        function renderMain(item) {
+          lbMainArea.innerHTML = ""; // clear
+          if (!item) return;
+          if (item.type === "image") {
+            const img = new Image();
+            img.alt = item.alt || "";
+            img.onload = function () {
+              showLoader(false);
+              lbMainArea.innerHTML = "";
+              img.className = "lb-main-media";
+              lbMainArea.appendChild(img);
+              // focus for a11y
+              img.tabIndex = -1;
+              try {
+                img.focus();
+              } catch (e) {}
+            };
+            img.onerror = function () {
+              showLoader(false);
+              lbMainArea.innerHTML =
+                '<div style="color:#fff">Unable to load image</div>';
+            };
+            showLoader(true);
+            img.src = item.src;
+          } else {
+            const video = document.createElement("video");
+            video.controls = true;
+            video.autoplay = true;
+            video.playsInline = true;
+            video.style.maxHeight = "78vh";
+            video.setAttribute("aria-label", "Video preview");
+            const source = document.createElement("source");
+            source.src = item.src;
+            source.type = "video/mp4";
+            video.appendChild(source);
+            video.onloadeddata = function () {
+              showLoader(false);
+              lbMainArea.innerHTML = "";
+              lbMainArea.appendChild(video);
+              try {
+                video.focus();
+              } catch (e) {}
+            };
+            video.onerror = function () {
+              showLoader(false);
+              lbMainArea.innerHTML =
+                '<div style="color:#fff">Unable to load video</div>';
+            };
+            showLoader(true);
+            video.load();
+          }
+        }
+
+        // highlight active thumbnail and ensure it's visible (center-ish)
+        function highlightThumb(index) {
+          const all = lbThumbs.querySelectorAll(".lb-thumb");
+          all.forEach((n) => n.classList.remove("active"));
+          const active = lbThumbs.querySelector(
+            '.lb-thumb[data-index="' + index + '"]'
+          );
+          if (active) {
+            active.classList.add("active");
+            // scroll active thumbnail into center-ish view
+            const containerRect = lbThumbs.getBoundingClientRect();
+            const btnRect = active.getBoundingClientRect();
+            const offset =
+              btnRect.left -
+              containerRect.left -
+              containerRect.width / 2 +
+              btnRect.width / 2;
+            lbThumbs.scrollBy({ left: offset, behavior: "smooth" });
+            try {
+              active.focus();
+            } catch (e) {}
+          }
+        }
+
+        function showLightbox(index, calledByThumb = false) {
+          if (!gallery.length) return;
+          currentIndex = (index + gallery.length) % gallery.length;
+          overlayLB.style.display = "flex";
+          overlayLB.setAttribute("aria-hidden", "false");
+
+          // set focus trap start
+          closeBtn.focus();
+
+          // preload neighbors
+          clearPreloads();
+          preloadResource(gallery[(currentIndex + 1) % gallery.length]);
+          preloadResource(
+            gallery[(currentIndex - 1 + gallery.length) % gallery.length]
+          );
+
+          renderMain(gallery[currentIndex]);
+          highlightThumb(currentIndex);
+        }
+
+        // attach click/keydown listeners to wrappers to open respective index
+        wrappers.forEach((wrap, i) => {
+          wrap.addEventListener("click", () => {
+            showLightbox(i);
+          });
+          wrap.addEventListener("keydown", (e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              showLightbox(i);
+            }
+          });
+        });
+
+        // Close
+        function closeLightbox() {
+          overlayLB.style.display = "none";
+          overlayLB.setAttribute("aria-hidden", "true");
+          lbMainArea.innerHTML = "";
+          clearPreloads();
+          // return focus to last focused element outside lightbox
+          // We choose to focus first wrapper that corresponds to currentIndex (if present)
+          const targetWrap = wrappers[currentIndex];
+          if (targetWrap && typeof targetWrap.focus === "function") {
+            try {
+              targetWrap.focus();
+            } catch (e) {}
+          }
+        }
+        closeBtn.addEventListener("click", closeLightbox);
+        overlayLB.addEventListener("click", (e) => {
+          if (e.target === overlayLB) closeLightbox();
+        });
+
+        // Prev / Next
+        function goto(delta) {
+          showLightbox(currentIndex + delta);
+        }
+        nextBtn.addEventListener("click", () => goto(1));
+        prevBtn.addEventListener("click", () => goto(-1));
+
+        // keyboard navigation
+        document.addEventListener("keydown", (e) => {
+          if (overlayLB.style.display !== "flex") return;
+          if (e.key === "Escape") closeLightbox();
+          if (e.key === "ArrowRight") goto(1);
+          if (e.key === "ArrowLeft") goto(-1);
+        });
+
+        // swipe support inside main area
+        (function addSwipeSupport() {
+          let startX = 0,
+            startY = 0,
+            isMoving = false,
+            threshold = 30;
+          lbMainArea.addEventListener(
+            "touchstart",
+            (e) => {
+              if (!e.touches || e.touches.length > 1) return;
+              startX = e.touches[0].clientX;
+              startY = e.touches[0].clientY;
+              isMoving = true;
+            },
+            { passive: true }
+          );
+          lbMainArea.addEventListener(
+            "touchmove",
+            (e) => {
+              if (!isMoving || !e.touches || e.touches.length > 1) return;
+              const dx = e.touches[0].clientX - startX;
+              const dy = e.touches[0].clientY - startY;
+              if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > threshold) {
+                if (dx < 0) goto(1);
+                else goto(-1);
+                isMoving = false;
+              }
+            },
+            { passive: true }
+          );
+          lbMainArea.addEventListener("touchend", () => {
+            isMoving = false;
+          });
+        })();
+
+        // Focus trap inside lightbox: keep focus inside overlay when open
+        (function focusTrap() {
+          const focusableSelectors =
+            'a[href], button, textarea, input, select, [tabindex]:not([tabindex="-1"])';
+          let lastFocused = null;
+          document.addEventListener("focusin", (e) => {
+            if (overlayLB.style.display === "flex") {
+              if (!overlayLB.contains(e.target)) {
+                e.stopPropagation();
+                closeBtn.focus();
+              }
+            } else {
+              lastFocused = e.target;
+            }
+          });
+          closeBtn.addEventListener("click", () => {
+            if (lastFocused)
+              try {
+                lastFocused.focus();
+              } catch (e) {}
+          });
+        })();
+
+        // build thumbs on ready
+        buildThumbs();
+
+        // mark first thumb active by default (if needed)
+        if (gallery.length) highlightThumb(0);
+      })();
+    </script>
   </body>
 </html>

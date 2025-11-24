@@ -7,587 +7,65 @@
     <meta name="description" content="PSquare Studio" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <style>
-      /* ---------- existing resets & buttons ---------- */
-      button {
-        border: 0;
-        background: transparent;
-        padding: 10px 16px;
-        border-radius: 8px;
-        cursor: pointer;
-        font-weight: 600;
-      }
-      button.active {
-        background: #111;
-        color: #fff;
-        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
-      }
-      .td-portfolio-filter-btn button:hover {
-        opacity: 0.92;
-      }
+    <link rel="stylesheet" href="assets/css/portfolio.css" />
 
-      /* ---------- card container ---------- */
-      .td-portfolio-filter-wrapper {
-        position: relative;
-        border-radius: 16px;
-        overflow: hidden;
-        background: #000;
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
-        transition: 0.25s ease;
-        min-height: 220px;
-      }
-      .td-portfolio-filter-wrapper:hover {
-        transform: translateY(-6px);
-        box-shadow: 0 18px 45px rgba(0, 0, 0, 0.18);
-      }
-
-      /* ---------- media equal size ---------- */
-      .td-portfolio-filter-thumb img,
-      .td-portfolio-filter-thumb video {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        aspect-ratio: 3 / 3;
-        display: block;
-        background: #111;
-      }
-      .td-portfolio-filter-thumb {
-        width: 100%;
-        height: 100%;
-      }
-      .td-portfolio-filter-thumb video {
-        aspect-ratio: 3 / 3;
-      }
-
-      /* bottom gradient + label */
-      .td-portfolio-filter-wrapper::after {
-        content: "";
-        position: absolute;
-        left: 0;
-        bottom: 0;
-        width: 100%;
-        height: 45%;
-        background: linear-gradient(to top, rgba(0, 0, 0, 0.55), transparent);
-        z-index: 5;
-      }
-      .portfolio-label {
-        position: absolute;
-        left: 0;
-        bottom: 0;
-        padding: 16px 20px;
-        width: 100%;
-        font-size: 18px;
-        font-weight: 600;
-        color: #fff;
-        z-index: 10;
-      }
-      .mb-30 {
-        margin-bottom: 35px !important;
-      }
-
-      /* ---------- MOBILE HORIZONTAL SCROLL ---------- */
-      .portfolio-filter-scroll {
-        width: 100%;
-        overflow-x: auto;
-        overflow-y: hidden;
-        white-space: nowrap;
-        padding-bottom: 12px;
-        cursor: grab;
-        -webkit-overflow-scrolling: touch;
-        -ms-overflow-style: none; /* IE and Edge */
-        scrollbar-width: none; /* Firefox */
-      }
-      .portfolio-filter-scroll:active {
-        cursor: grabbing;
-      }
-      .portfolio-filter-scroll::-webkit-scrollbar {
-        display: none;
-        height: 8px;
-      }
-      .portfolio-filter-scroll .td-portfolio-filter-btn {
-        display: inline-flex;
-        gap: 12px;
-        align-items: center;
-        padding-left: 12px;
-      }
-      .portfolio-filter-scroll button {
-        white-space: nowrap;
-        background: #f1f1f1;
-        color: #111;
-        padding: 9px 14px;
-        font-size: 14px;
-      }
-      @media (min-width: 768px) {
-        .portfolio-filter-scroll {
-          overflow: visible;
-          white-space: normal;
-          padding-bottom: 0;
-          cursor: default;
-        }
-        .portfolio-filter-scroll .td-portfolio-filter-btn {
-          display: flex;
-          justify-content: center;
-          gap: 18px;
-          padding-left: 0;
-        }
-        .portfolio-filter-scroll button {
-          background: transparent;
-          color: inherit;
-          padding: 8px 12px;
-        }
-        .portfolio-filter-scroll button.active {
-          background: #111;
-          color: #fff;
-        }
-      }
-
-      /* grid spacing */
-      .grid {
-        margin-left: -15px;
-        margin-right: -15px;
-      }
-      .grid .col-lg-4 {
-        padding-left: 15px;
-        padding-right: 15px;
-        margin-bottom: 30px;
-      }
-
-      /* header & nav baseline */
-      .header-area {
-        padding: 18px 0;
-        background: #fff;
-        position: sticky;
-        top: 0;
-        z-index: 999;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-      }
-      .header-container {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 18px;
-      }
-      .logo img {
-        height: 42px;
-        display: block;
-      }
-      nav .nav-menu {
-        list-style: none;
-        display: flex;
-        gap: 18px;
-        align-items: center;
-        margin: 0;
-        padding: 0;
-      }
-      nav .nav-menu li a {
-        text-decoration: none;
-        color: #111;
-        font-weight: 600;
-        padding: 6px 8px;
-      }
-      .cta-button {
-        background: #111;
-        color: #fff;
-        padding: 8px 14px;
-        border-radius: 8px;
-      }
-
-      /* mobile menu */
-      .mobile-toggle {
-        display: none;
-        background: transparent;
-        border: 0;
-      }
-      .mobile-menu {
-        display: none;
-        position: fixed;
-        top: 0;
-        right: 0;
-        width: 320px;
-        height: 100vh;
-        background: #fff;
-        box-shadow: -8px 0 24px rgba(0, 0, 0, 0.1);
-        padding: 30px;
-        z-index: 1000;
-      }
-      .mobile-menu .close-menu {
-        background: transparent;
-        border: 0;
-        font-size: 28px;
-        position: absolute;
-        top: 10px;
-        right: 14px;
-        cursor: pointer;
-      }
-      .overlay {
-        display: none;
-        position: fixed;
-        inset: 0;
-        background: rgba(0, 0, 0, 0.45);
-        z-index: 999;
-      }
-      @media (max-width: 991px) {
-        nav .nav-menu {
-          display: none;
-        }
-        .mobile-toggle {
-          display: inline-block;
-        }
-      }
-
-      /* footer baseline */
-      footer .td-footer-area {
-        background: #0b0b0b;
-        color: #fff;
-        padding: 60px 0;
-      }
-      footer .td-footer-area a {
-        color: #fff;
-        text-decoration: none;
-      }
-
-      /* ==========================
-         LIGHTBOX + THUMBNAILS
-         ========================== */
-
-      /* overlay */
-      #lightboxOverlay {
-        position: fixed;
-        inset: 0;
-        background: rgba(0, 0, 0, 0.95);
-        display: none;
-        justify-content: center;
-        align-items: center;
-        z-index: 99999;
-        padding: 20px;
-      }
-
-      /* content wrapper: main preview + thumbnails */
-      #lightboxContent {
-        width: 100%;
-        max-width: 1100px;
-        max-height: 90vh;
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-        position: relative;
-        align-items: center;
-        justify-content: center;
-      }
-
-      /* main preview area */
-      .lb-main {
-        width: 100%;
-        max-height: 78vh;
-        background: transparent;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        position: relative;
-      }
-      .lb-main img,
-      .lb-main video {
-        width: 100%;
-        height: auto;
-        max-height: 78vh;
-        border-radius: 10px;
-        object-fit: contain;
-      }
-
-      /* tiny film-strip thumbnails row */
-      .lb-thumbs {
-        width: 100%;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        overflow-x: auto;
-        padding: 8px 6px;
-        -webkit-overflow-scrolling: touch;
-      }
-      .lb-thumbs::-webkit-scrollbar {
-        height: 8px;
-      }
-      .lb-thumb {
-        flex: 0 0 auto;
-        width: 94px; /* film-strip small thumb width */
-        height: 56px; /* small fixed height (film-strip feel) */
-        border-radius: 6px;
-        overflow: hidden;
-        background: #111;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        position: relative;
-        cursor: pointer;
-        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
-        border: 2px solid transparent;
-      }
-      .lb-thumb img,
-      .lb-thumb video {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        display: block;
-      }
-
-      /* highlight active thumbnail */
-      .lb-thumb.active {
-        border-color: #fff;
-        transform: scale(1.03);
-        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
-      }
-
-      /* navigation, close and loader */
-      #lightboxClose {
-        position: absolute;
-        top: 12px;
-        right: 12px;
-        font-size: 34px;
-        color: #fff;
-        cursor: pointer;
-        background: rgba(255, 255, 255, 0.06);
-        padding: 6px 12px;
-        border-radius: 8px;
-        z-index: 100010;
-      }
-      .lb-nav {
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        font-size: 34px;
-        color: white;
-        cursor: pointer;
-        padding: 10px 14px;
-        background: rgba(255, 255, 255, 0.04);
-        border-radius: 50%;
-        user-select: none;
-        z-index: 100010;
-      }
-      #lbPrev {
-        left: 18px;
-      }
-      #lbNext {
-        right: 18px;
-      }
-      @media (max-width: 600px) {
-        #lightboxClose {
-          font-size: 26px;
-          top: 8px;
-          right: 8px;
-        }
-        .lb-nav {
-          font-size: 26px;
-          padding: 8px 10px;
-        }
-        .lb-thumb {
-          width: 76px;
-          height: 48px;
-        }
-      }
-
-      .lb-loader {
-        width: 56px;
-        height: 56px;
-        border-radius: 50%;
-        border: 4px solid rgba(255, 255, 255, 0.12);
-        border-top-color: #fff;
-        animation: spin 1s linear infinite;
-        position: absolute;
-        z-index: 100005;
-      }
-      @keyframes spin {
-        to {
-          transform: rotate(360deg);
-        }
-      }
-
-      /* accessibility focus rings */
-      button:focus,
-      a:focus,
-      .lb-thumb:focus {
-        outline: 3px solid rgba(255, 255, 255, 0.08);
-        outline-offset: 2px;
-      }
-    </style>
     <link
       rel="shortcut icon"
       type="image/x-icon"
       href="assets/img/logo/Asset1.png"
     />
-    <!-- Place favicon.ico in the root directory -->
-
-    <!-- CSS here -->
-    <link rel="stylesheet" href="assets/css/header.css" />
-    <!--<< Bootstrap min.css >>-->
     <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
-    <!--<< magnific-popup.css >>-->
     <link rel="stylesheet" href="assets/css/magnific-popup.css" />
-    <!--<< fontawesome-all.min.css >>-->
     <link rel="stylesheet" href="assets/css/fontawesome-all.min.css" />
-    <!--<< swiper-bundle.min.css >>-->
     <link rel="stylesheet" href="assets/css/swiper-bundle.min.css" />
-    <!--<< odometer.css >>-->
     <link rel="stylesheet" href="assets/css/odometer.css" />
-    <!--<< ion.rangeSlider.min.css >>-->
     <link rel="stylesheet" href="assets/css/ion.rangeSlider.min.css" />
-    <!--<< effect-slicer.css >>-->
     <link rel="stylesheet" href="assets/css/effect-slicer.css" />
-    <!--<< animate.css >>-->
     <link rel="stylesheet" href="assets/css/animate.css" />
-    <!--<< default.css >>-->
     <link rel="stylesheet" href="assets/css/defauls-spacing.css" />
-    <!--<< main.css >>-->
     <link rel="stylesheet" href="assets/css/main.css" />
   </head>
-
   <body>
-    <!-- Preloader Start -->
-    <div id="preloader" class="preloader">
-      <div class="animation-preloader">
-        <div class="spinner"></div>
-        <div class="txt-loading">
-          <span data-text-preloader="P" class="letters-loading"> P </span>
-          <span data-text-preloader="S" class="letters-loading"> S </span>
-          <span data-text-preloader="Q" class="letters-loading"> Q </span>
-          <span data-text-preloader="U" class="letters-loading"> U </span>
-          <span data-text-preloader="A" class="letters-loading"> A </span>
-          <span data-text-preloader="R" class="letters-loading"> R </span>
-          <span data-text-preloader="E" class="letters-loading"> E </span>
-        </div>
-        <p class="text-center">Loading</p>
-      </div>
-      <div class="loader">
-        <div class="row">
-          <div class="col-3 loader-section section-left">
-            <div class="bg"></div>
-          </div>
-          <div class="col-3 loader-section section-left">
-            <div class="bg"></div>
-          </div>
-          <div class="col-3 loader-section section-right">
-            <div class="bg"></div>
-          </div>
-          <div class="col-3 loader-section section-right">
-            <div class="bg"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Start Cursor Pointer -->
-
-    <div class="mouse-follower">
-      <span class="cursor-outline"></span>
-      <span class="cursor-dot"></span>
-    </div>
-    <!-- End Cursor Pointer -->
-
-    <!-- Scroll-top -->
-    <button class="scroll__top scroll-to-target" data-target="html">
-      <i class="fa-sharp fa-regular fa-arrow-up"></i>
-    </button>
-    <!-- Scroll-top-end-->
-
-    <!-- header-area -->
-    <header class="header-area">
-      <div class="header-container">
-        <!-- Logo -->
-        <div class="logo">
-          <a href="index.html">
-            <!-- Replace with your actual logo -->
-            <img src="assets/img/logo/Asset1.png" alt="Company Logo" />
-          </a>
-        </div>
-
-        <!-- Desktop Navigation -->
-        <nav>
-          <ul class="nav-menu">
-            <li><a href="#">Who We Are</a></li>
-            <li><a href="/portfolio-three-columns.html">Portfolio</a></li>
-            <li><a href="service.html">Services</a></li>
-            <li><a href="#">Contact Us</a></li>
-            <li><button class="cta-button">Get Started</button></li>
-          </ul>
-        </nav>
-
-        <!-- Mobile Menu Toggle -->
-        <button class="mobile-toggle" id="mobileToggle">
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
-      </div>
-
-      <!-- Mobile Menu -->
-      <div class="mobile-menu" id="mobileMenu">
-        <button class="close-menu" id="closeMenu">×</button>
-        <ul>
-          <li><a href="#">Who We Are</a></li>
-          <li><a href="portfolio-three-columns.html">Portfolio</a></li>
-          <li><a href="service.html">Services</a></li>
-          <li><a href="contact.html">Contact Us</a></li>
-        </ul>
-        <button class="cta-button">Get Started</button>
-      </div>
-
-      <!-- Overlay -->
-      <div class="overlay" id="overlay"></div>
-    </header>
-    <!-- header-area-end -->
     <div id="smooth-wrapper">
       <div id="smooth-content">
         <main>
-          <!-- td-breadcrumb-area-start -->
-          <div class="td-breadcrumb-area td-breadcrumb-spacing mb-75">
-            <div class="container">
-              <div class="row">
-                <div class="col-lg-9">
-                  <div class="td-breadcrumb-wrap">
-                    <span
-                      class="subtitle d-inline-block mb-10 wow fadeInLeft"
-                      data-wow-delay=".5s"
-                      data-wow-duration="1s"
-                      >LATEST PORTFOLIO</span
-                    >
-                    <h2
-                      class="td-section-page-title td-section-page-bigtitle mb-35 wow fadeInLeft"
-                      data-wow-delay=".7s"
-                      data-wow-duration="1s"
-                    >
-                      Classic <span>grid</span>
-                    </h2>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- td-breadcrumb-area-end -->
-
-          <!-- td-portfolio-area-start -->
+          <!-- PORTFOLIO GRID UPDATED -->
           <div
             class="td-portfolio-filter-area td-portfolio-filter-three pb-160"
           >
             <div class="container-fluid container-1830">
+              <!-- Filter Buttons -->
               <div class="row">
-                <div
-                  class="col-lg-12 mb-50 wow fadeInUp"
-                  data-wow-delay=".5s"
-                  data-wow-duration="1s"
-                >
+                <div class="col-lg-12 mb-50">
                   <div
-                    class="td-portfolio-filter-btn text-center masonary-menu"
+                    class="portfolio-filter-scroll"
+                    id="portfolioFilterScroll"
+                    role="toolbar"
+                    aria-label="Portfolio filters"
                   >
-                    <button data-filter="*" class="active">SHOW ALL</button>
-                    <button data-filter=".prof">Graphic Design</button>
-                    <button data-filter=".prof1">Motion Ads</button>
-                    <button data-filter=".prof2">Video Editing</button>
-                    <button data-filter=".prof3">3D Architecture</button>
-                    <button data-filter=".prof4">CGI</button>
+                    <div
+                      class="td-portfolio-filter-btn masonary-menu"
+                      role="group"
+                      aria-label="Filter buttons"
+                    >
+                      <button
+                        data-filter="*"
+                        class="active"
+                        aria-pressed="true"
+                      >
+                        SHOW ALL
+                      </button>
+                      <button data-filter=".prof">Graphic Design</button>
+                      <button data-filter=".prof1">Motion Ads</button>
+                      <button data-filter=".prof2">Video Editing</button>
+                      <button data-filter=".prof3">3D Architecture</button>
+                      <button data-filter=".prof4">CGI</button>
+                    </div>
                   </div>
                 </div>
               </div>
+
+              <!-- GRID -->
               <div class="grid row" id="portfolioGrid">
                 <!-- 3d architecture images start -->
                 <!-- Item 1 -->
@@ -1187,28 +665,10 @@
                 <!-- motion graphic videos end -->
                 <!-- Add more items as needed -->
               </div>
-
-              <div class="row">
-                <div class="col-12">
-                  <div class="d-flex justify-content-center mt-50">
-                    <div class="td-btn-group">
-                      <a class="td-btn-circle" href="service.html">
-                        <i class="fa-solid fa-arrow-right"></i>
-                      </a>
-                      <a class="td-btn-2 td-btn-primary" href="service.html"
-                        >SEE MORE PROJECT</a
-                      >
-                      <a class="td-btn-circle" href="service.html">
-                        <i class="fa-solid fa-arrow-right"></i>
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
-          <!-- td-portfolio-area-end -->
         </main>
+
         <!-- LIGHTBOX OVERLAY: MAIN + THUMBNAILS -->
         <div id="lightboxOverlay" aria-hidden="true">
           <button id="lightboxClose" aria-label="Close lightbox">×</button>
@@ -1239,132 +699,19 @@
             <div id="lbLoader" class="lb-loader" style="display: none"></div>
           </div>
         </div>
-        <!-- footer-area-start -->
-        <footer>
-          <br />
-          <br />
-          <div class="td-footer-area td-footer-2-wrap">
-            <div class="container">
-              <div class="row">
-                <div class="col-lg-6 mb-30">
-                  <div class="td-footer-3-widget">
-                    <h2 class="td-footer-2-bigtitle">
-                      Entrust design<br />
-                      to professionals
-                    </h2>
-                  </div>
-                </div>
-                <div class="col-lg-3 col-md-6 col-sm-6 mb-30">
-                  <div class="td-footer-3-widget">
-                    <h4 class="td-footer-3-title mb-15">India</h4>
-                    <a class="links mb-40 d-inline-block" href="#"
-                      >Ranip —<br />
-                      Ahmedabad, Gujarat</a
-                    >
-
-                    <div class="td-footer-3-social">
-                      <a href="http://www.facebook.com/PSQUAERE?mibextid=ZbWKwL"
-                        ><i class="fa-brands fa-facebook-f"></i
-                      ></a>
-                      <a
-                        href="https://www.linkedin.com/company/the-psquare-studio/?viewAsMember=true"
-                        ><i class="fa-brands fa-linkedin-in"></i
-                      ></a>
-                      <a href="https://www.instagram.com/thepsquarestudio/"
-                        ><i class="fa-brands fa-instagram"></i
-                      ></a>
-                      <a
-                        href="https://api.whatsapp.com/send/?phone=%2B919898709490&text&type=phone_number&app_absent=0"
-                        ><i class="fa-brands fa-whatsapp"></i
-                      ></a>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-lg-3 col-md-6 col-sm-6 mb-30">
-                  <div class="td-footer-3-widget">
-                    <h4 class="td-footer-3-title mb-15">Say hello!</h4>
-                    <a class="links links-3 d-block mb-5" href="#"
-                      >thepsquarestudio25@gmail.com</a
-                    >
-                    <a class="links-2" href="tel:+1234567890"
-                      >+91 98987 09490</a
-                    >
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="container">
-              <div class="td-footer-2-border mt-60">
-                <div class="row align-items-center">
-                  <div class="col-lg-8">
-                    <div class="td-footer-3-menu mb-10">
-                      <ul>
-                        <li>
-                          <a href="about.html">Who We Are</a>
-                        </li>
-                        <li>
-                          <a href="portfolio-two-columns.html">Portfolio</a>
-                        </li>
-                        <li><a href="service.html">Services</a></li>
-                        <!-- <li><a href="#">Blog</a></li> -->
-                        <li><a href="contact.html">Contact</a></li>
-                      </ul>
-                    </div>
-                  </div>
-                  <div class="col-lg-4">
-                    <div class="td-footer-3-copyright text-lg-end mb-10">
-                      <p>
-                        © 2025 <a href="#">PSQUARE.</a> All Rights Reserved.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </footer>
-        <!-- footer-area-end -->
       </div>
     </div>
 
-    <!-- JS here -->
-    <!--<< jquery.Js >>-->
+    <!-- JS files (Make sure these paths exist in your project) -->
     <script src="assets/js/vendor/jquery.js"></script>
-    <!--<< bootstrap.min.Js >>-->
     <script src="assets/js/bootstrap.min.js"></script>
-    <!--<< gsap.Js >>-->
     <script src="assets/js/jsap/gsap.js"></script>
-    <!--<< gsap-scroll-smoother.Js >>-->
     <script src="assets/js/jsap/gsap-scroll-smoother.js"></script>
-    <!--<< gsap-scroll-trigger.Js >>-->
     <script src="assets/js/jsap/gsap-scroll-trigger.js"></script>
-    <!--<< gsap-scroll-to-plugin.Js >>-->
     <script src="assets/js/jsap/gsap-scroll-to-plugin.js"></script>
-    <!--<< gsap-split-text.Js >>-->
     <script src="assets/js/jsap/gsap-split-text.js"></script>
-    <!--<< isotope.pkgd.min.Js >>-->
     <script src="assets/js/isotope.pkgd.min.js"></script>
-    <!--<< ion.rangeSlider.min.Js >>-->
-    <script src="assets/js/ion.rangeSlider.min.js"></script>
-    <!--<< effect-slicer.Js >>-->
-    <script src="assets/js/effect-slicer.js"></script>
-    <!--<< imagesloaded.pkgd.min.Js >>-->
     <script src="assets/js/imagesloaded.pkgd.min.js"></script>
-    <!--<< jquery.magnific-popup.min.Js >>-->
-    <script src="assets/js/jquery.magnific-popup.min.js"></script>
-    <!--<< jquery.odometer.min.Js >>-->
-    <script src="assets/js/jquery.odometer.min.js"></script>
-    <!--<< jquery-appear.Js >>-->
-    <script src="assets/js/jquery-appear.js"></script>
-    <!--<< swiper-bundle.min.Js >>-->
-    <script src="assets/js/swiper-bundle.min.js"></script>
-    <!--<< jquery.nice-select.min.Js >>-->
-    <script src="assets/js/nice-select.js"></script>
-    <!--<< wow.Js >>-->
-    <script src="assets/js/wow.js"></script>
-    <!--<< ajax-form.Js >>-->
-    <script src="assets/js/ajax-form.js"></script>
-    <!--<< main.Js >>-->
     <script src="assets/js/main.js"></script>
     <!-- ===========================
          DRAG SCROLL + ISOTOPE + LAZY + LIGHTBOX (with thumbnails)

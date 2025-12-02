@@ -1,5 +1,5 @@
 :root {
-      --td-ff-body: "Inter", serif;
+  --td-ff-body: "Inter", serif;
   --td-ff-heading: "Plus Jakarta Sans", serif;
   --td-ff-dm: "DM Serif Display", serif;
   --td-ff-dm-sans: "DM Sans", sans-serif;
@@ -354,8 +354,6 @@
   color: var(--light-text);
 }
 
-
-
 /* Stacked User Images Styling */
 .user-images-stack {
   display: flex;
@@ -389,4 +387,44 @@
   font-weight: 600;
   font-size: 18px;
   color: #333;
+}
+.brands-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  border-top: 1px solid #ddd;
+  border-left: 1px solid #ddd;
+}
+
+.brand-item {
+  padding: 20px;
+  border-right: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.brand-item img {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+  display: block;
+}
+
+/* Responsive breakpoints */
+@media (max-width: 992px) {
+  .brands-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 576px) {
+  .brands-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .brand-item img {
+    width: 90px;
+    height: 90px;
+  }
 }

@@ -504,11 +504,19 @@
         <!-- Desktop Navigation -->
         <nav>
           <ul class="nav-menu">
-            <li><a href="#">Who We Are</a></li>
-            <li><a href="/portfolio-three-columns.html">Portfolio</a></li>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">Who We Are</a></li>
+            <li><a href="portfolio-three-columns.html">Portfolio</a></li>
             <li><a href="service.html">Services</a></li>
-            <li><a href="#">Contact Us</a></li>
-            <li><button class="cta-button">Get Started</button></li>
+            <li><a href="contact.html">Contact Us</a></li>
+            <li>
+              <button
+                class="cta-button"
+                onclick="window.location.href='contact.html'"
+              >
+                Get Started
+              </button>
+            </li>
           </ul>
         </nav>
 
@@ -524,18 +532,22 @@
       <div class="mobile-menu" id="mobileMenu">
         <button class="close-menu" id="closeMenu">×</button>
         <ul>
-          <li><a href="#">Who We Are</a></li>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">Who We Are</a></li>
           <li><a href="portfolio-three-columns.html">Portfolio</a></li>
           <li><a href="service.html">Services</a></li>
           <li><a href="contact.html">Contact Us</a></li>
         </ul>
-        <button class="cta-button">Get Started</button>
+        <a href="contact.html"
+          ><button class="cta-button">Get Started</button></a
+        >
       </div>
 
       <!-- Overlay -->
       <div class="overlay" id="overlay"></div>
     </header>
     <!-- header-area-end -->
+
     <div id="smooth-wrapper">
       <div id="smooth-content">
         <main>
@@ -549,14 +561,14 @@
                       class="subtitle d-inline-block mb-10 wow fadeInLeft"
                       data-wow-delay=".5s"
                       data-wow-duration="1s"
-                      >LATEST PORTFOLIO</span
+                      > PORTFOLIO</span
                     >
                     <h2
                       class="td-section-page-title td-section-page-bigtitle mb-35 wow fadeInLeft"
                       data-wow-delay=".7s"
                       data-wow-duration="1s"
                     >
-                      Classic <span>grid</span>
+                      Visual <span>Collection</span>
                     </h2>
                   </div>
                 </div>
@@ -585,6 +597,7 @@
                     <button data-filter=".prof2">Video Editing</button>
                     <button data-filter=".prof3">3D Architecture</button>
                     <button data-filter=".prof4">CGI</button>
+                    <button data-filter=".prof4">Set Design</button>
                   </div>
                 </div>
               </div>

@@ -1,402 +1,222 @@
-/* ---------- existing resets & buttons ---------- */
-button {
-  border: 0;
+/**********************************************
+ PORTFOLIO PAGE — SCOPED STYLING ONLY
+ (place this file at assets/css/portfolio.css)
+**********************************************/
+
+/* --- page-scoped reset to avoid leaking global header/footer styles --- */
+.portfolio-page,
+.portfolio-page * {
+  box-sizing: border-box;
+  font-family: inherit; /* keep template font but avoid weird overrides */
+  color: inherit;
+}
+
+/* make sure the immediate container doesn't inherit dark overlays */
+.portfolio-page {
   background: transparent;
+  color: #1b1b1b;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ============ FILTER BUTTONS ============ */
+.portfolio-page .td-portfolio-filter-btn {
+  display: flex;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 12px;
+}
+.portfolio-page .td-portfolio-filter-btn button {
+  border: 0;
+  background: rgba(0,0,0,0.03);
   padding: 10px 16px;
   border-radius: 8px;
   cursor: pointer;
   font-weight: 600;
+  color: #111;
+  transition: background 200ms ease, transform 160ms ease;
 }
-button.active {
-  background: #111;
+.portfolio-page .td-portfolio-filter-btn button:hover {
+  transform: translateY(-2px);
+  background: rgba(0,0,0,0.06);
+}
+.portfolio-page .td-portfolio-filter-btn button.active {
+  background: #0b0b0b;
   color: #fff;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
-}
-.td-portfolio-filter-btn button:hover {
-  opacity: 0.92;
+  box-shadow: 0 6px 20px rgba(11,11,11,0.18);
 }
 
-/* ---------- card container ---------- */
-.td-portfolio-filter-wrapper {
+/* mobile visual indicator */
+.portfolio-page .td-portfolio-filter-btn::-webkit-scrollbar { height: 6px; }
+.portfolio-page .td-portfolio-filter-btn::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.12); border-radius: 6px; }
+
+/* ============ PORTFOLIO GRID ============ */
+.portfolio-page .grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  margin: 0 -12px;
+}
+.portfolio-page .grid-item {
+  padding: 0 12px;
+  flex: 1 1 calc(33.333% - 24px);
+}
+@media (max-width: 992px) {
+  .portfolio-page .grid-item { flex: 1 1 calc(50% - 20px); }
+}
+@media (max-width: 600px) {
+  .portfolio-page .grid-item { flex: 1 1 100%; padding: 0 8px; }
+}
+
+/* ============ CARD WRAPPER ============ */
+.portfolio-page .td-portfolio-filter-wrapper {
   position: relative;
   border-radius: 16px;
   overflow: hidden;
-  background: #000;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
-  transition: 0.25s ease;
+  background: #fff;
+  transition: transform .25s ease, box-shadow .25s ease;
   min-height: 220px;
+  box-shadow: 0 6px 18px rgba(12,12,12,0.06);
+  cursor: pointer;
+  display: flex;
+  align-items: stretch;
 }
-.td-portfolio-filter-wrapper:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.18);
-}
+.portfolio-page .td-portfolio-filter-wrapper:focus { outline: 2px solid rgba(11,94,255,0.12); outline-offset: 4px; }
+.portfolio-page .td-portfolio-filter-wrapper:hover { transform: translateY(-6px); box-shadow: 0 10px 30px rgba(12,12,12,0.12); }
 
-/* ---------- media equal size ---------- */
-.td-portfolio-filter-thumb img,
-.td-portfolio-filter-thumb video {
+/* ============ IMAGE & VIDEO ============ */
+.portfolio-page .td-portfolio-filter-thumb {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  aspect-ratio: 3 / 3;
   display: block;
-  background: #111;
 }
-.td-portfolio-filter-thumb {
+.portfolio-page .td-portfolio-filter-thumb img,
+.portfolio-page .td-portfolio-filter-thumb video {
   width: 100%;
   height: 100%;
-}
-.td-portfolio-filter-thumb video {
-  aspect-ratio: 3 / 3;
+  aspect-ratio: 1/1;
+  object-fit: cover;
+  display: block;
 }
 
-/* bottom gradient + label */
-.td-portfolio-filter-wrapper::after {
-  content: "";
+/* small caption placeholder if you want later */
+.portfolio-page .td-portfolio-filter-caption {
   position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  height: 45%;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.55), transparent);
-  z-index: 5;
-}
-.portfolio-label {
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  padding: 16px 20px;
-  width: 100%;
-  font-size: 18px;
-  font-weight: 600;
+  left: 12px;
+  bottom: 12px;
   color: #fff;
-  z-index: 10;
-}
-.mb-30 {
-  margin-bottom: 35px !important;
-}
-
-/* ---------- MOBILE HORIZONTAL SCROLL ---------- */
-.portfolio-filter-scroll {
-  width: 100%;
-  overflow-x: auto;
-  overflow-y: hidden;
-  white-space: nowrap;
-  padding-bottom: 12px;
-  cursor: grab;
-  -webkit-overflow-scrolling: touch;
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
-}
-.portfolio-filter-scroll:active {
-  cursor: grabbing;
-}
-.portfolio-filter-scroll::-webkit-scrollbar {
-  display: none;
-  height: 8px;
-}
-.portfolio-filter-scroll .td-portfolio-filter-btn {
-  display: inline-flex;
-  gap: 12px;
-  align-items: center;
-  padding-left: 12px;
-}
-.portfolio-filter-scroll button {
-  white-space: nowrap;
-  background: #f1f1f1;
-  color: #111;
-  padding: 9px 14px;
+  text-shadow: 0 3px 10px rgba(0,0,0,0.6);
+  font-weight: 700;
   font-size: 14px;
 }
-@media (min-width: 768px) {
-  .portfolio-filter-scroll {
-    overflow: visible;
-    white-space: normal;
-    padding-bottom: 0;
-    cursor: default;
-  }
-  .portfolio-filter-scroll .td-portfolio-filter-btn {
-    display: flex;
-    justify-content: center;
-    gap: 18px;
-    padding-left: 0;
-  }
-  .portfolio-filter-scroll button {
-    background: transparent;
-    color: inherit;
-    padding: 8px 12px;
-  }
-  .portfolio-filter-scroll button.active {
-    background: #111;
-    color: #fff;
-  }
-}
 
-/* grid spacing */
-.grid {
-  margin-left: -15px;
-  margin-right: -15px;
-}
-.grid .col-lg-4 {
-  padding-left: 15px;
-  padding-right: 15px;
-  margin-bottom: 30px;
-}
-
-/* header & nav baseline */
-.header-area {
-  padding: 18px 0;
-  background: #fff;
-  position: sticky;
-  top: 0;
-  z-index: 999;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-}
-.header-container {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 18px;
-}
-.logo img {
-  height: 42px;
-  display: block;
-}
-nav .nav-menu {
-  list-style: none;
-  display: flex;
-  gap: 18px;
-  align-items: center;
-  margin: 0;
-  padding: 0;
-}
-nav .nav-menu li a {
-  text-decoration: none;
-  color: #111;
-  font-weight: 600;
-  padding: 6px 8px;
-}
-.cta-button {
-  background: #111;
-  color: #fff;
-  padding: 8px 14px;
-  border-radius: 8px;
-}
-
-/* mobile menu */
-.mobile-toggle {
-  display: none;
-  background: transparent;
-  border: 0;
-}
-.mobile-menu {
-  display: none;
-  position: fixed;
-  top: 0;
-  right: 0;
-  width: 320px;
-  height: 100vh;
-  background: #fff;
-  box-shadow: -8px 0 24px rgba(0, 0, 0, 0.1);
-  padding: 30px;
-  z-index: 1000;
-}
-.mobile-menu .close-menu {
-  background: transparent;
-  border: 0;
-  font-size: 28px;
-  position: absolute;
-  top: 10px;
-  right: 14px;
-  cursor: pointer;
-}
-.overlay {
-  display: none;
+/**********************************************
+ LIGHTBOX (RESPONSIVE)
+**********************************************/
+#lightboxOverlay.portfolio-lightbox {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.45);
-  z-index: 999;
-}
-@media (max-width: 991px) {
-  nav .nav-menu {
-    display: none;
-  }
-  .mobile-toggle {
-    display: inline-block;
-  }
-}
-
-/* footer baseline */
-footer .td-footer-area {
-  background: #0b0b0b;
-  color: #fff;
-  padding: 60px 0;
-}
-footer .td-footer-area a {
-  color: #fff;
-  text-decoration: none;
-}
-
-/* ==========================
-         LIGHTBOX + THUMBNAILS
-         ========================== */
-
-/* overlay */
-#lightboxOverlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.95);
+  background: rgba(3,3,3,0.95);
   display: none;
   justify-content: center;
   align-items: center;
+  padding: 18px;
   z-index: 99999;
-  padding: 20px;
-}
-
-/* content wrapper: main preview + thumbnails */
-#lightboxContent {
-  width: 100%;
-  max-width: 1100px;
-  max-height: 90vh;
-  display: flex;
   flex-direction: column;
-  gap: 12px;
-  position: relative;
-  align-items: center;
-  justify-content: center;
 }
 
-/* main preview area */
-.lb-main {
+/* content area */
+.portfolio-page .lb-main {
   width: 100%;
+  max-width: 1200px;
   max-height: 78vh;
-  background: transparent;
   display: flex;
-  align-items: center;
   justify-content: center;
-  position: relative;
+  align-items: center;
+  margin-bottom: 12px;
 }
-.lb-main img,
-.lb-main video {
+.portfolio-page .lb-main img,
+.portfolio-page .lb-main video,
+.portfolio-page .lb-main .lb-placeholder {
   width: 100%;
   height: auto;
   max-height: 78vh;
-  border-radius: 10px;
+  border-radius: 12px;
   object-fit: contain;
+  display: block;
+  background: #111;
 }
 
-/* tiny film-strip thumbnails row */
-.lb-thumbs {
+/* loader */
+.portfolio-page #lbLoader {
+  display: none;
+  color: #fff;
+  font-size: 14px;
+  margin-top: 8px;
+}
+
+/* THUMBNAILS */
+.portfolio-page .lb-thumbs {
   width: 100%;
   display: flex;
-  align-items: center;
-  gap: 8px;
+  gap: 10px;
   overflow-x: auto;
-  padding: 8px 6px;
-  -webkit-overflow-scrolling: touch;
+  padding: 8px;
+  align-items: center;
 }
-.lb-thumbs::-webkit-scrollbar {
-  height: 8px;
-}
-.lb-thumb {
+.portfolio-page .lb-thumb {
   flex: 0 0 auto;
-  width: 94px; /* film-strip small thumb width */
-  height: 56px; /* small fixed height (film-strip feel) */
+  width: 90px;
+  height: 60px;
   border-radius: 6px;
   overflow: hidden;
-  background: #111;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  cursor: pointer;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
   border: 2px solid transparent;
+  background: #222;
 }
-.lb-thumb img,
-.lb-thumb video {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
+.portfolio-page .lb-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.portfolio-page .lb-thumb.active { border-color: #fff; transform: scale(1.03); box-shadow: 0 6px 16px rgba(0,0,0,0.6); }
 
-/* highlight active thumbnail */
-.lb-thumb.active {
-  border-color: #fff;
-  transform: scale(1.03);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
-}
-
-/* navigation, close and loader */
-#lightboxClose {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  font-size: 34px;
-  color: #fff;
-  cursor: pointer;
-  background: rgba(255, 255, 255, 0.06);
-  padding: 6px 12px;
-  border-radius: 8px;
-  z-index: 100010;
-}
-.lb-nav {
+/* NAVIGATION */
+.portfolio-page .lb-nav {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  font-size: 34px;
-  color: white;
-  cursor: pointer;
+  font-size: 32px;
+  background: rgba(255,255,255,0.06);
+  color: #fff;
   padding: 10px 14px;
-  background: rgba(255, 255, 255, 0.04);
   border-radius: 50%;
-  user-select: none;
-  z-index: 100010;
+  cursor: pointer;
+  border: none;
 }
-#lbPrev {
-  left: 18px;
-}
-#lbNext {
-  right: 18px;
-}
-@media (max-width: 600px) {
-  #lightboxClose {
-    font-size: 26px;
-    top: 8px;
-    right: 8px;
-  }
-  .lb-nav {
-    font-size: 26px;
-    padding: 8px 10px;
-  }
-  .lb-thumb {
-    width: 76px;
-    height: 48px;
-  }
-}
+#lbPrev { left: 18px; }
+#lbNext { right: 18px; }
 
-.lb-loader {
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  border: 4px solid rgba(255, 255, 255, 0.12);
-  border-top-color: #fff;
-  animation: spin 1s linear infinite;
+/* CLOSE BUTTON */
+#lightboxClose {
   position: absolute;
-  z-index: 100005;
-}
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
+  top: 12px;
+  right: 18px;
+  font-size: 28px;
+  background: rgba(255,255,255,0.06);
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
 }
 
-/* accessibility focus rings */
-button:focus,
-a:focus,
-.lb-thumb:focus {
-  outline: 3px solid rgba(255, 255, 255, 0.08);
-  outline-offset: 2px;
+/* responsive tweaks */
+@media (max-width: 992px) {
+  .portfolio-page .lb-nav { font-size: 24px; padding: 8px 10px; }
+  #lbPrev { left: 8px; }
+  #lbNext { right: 8px; }
+  .portfolio-page .lb-thumb { width: 74px; height: 54px; }
+}
+
+@media (max-width: 600px) {
+  .portfolio-page .lb-main { max-height: 62vh; }
+  .portfolio-page .lb-thumb { width: 64px; height: 44px; }
 }

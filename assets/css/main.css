@@ -5608,7 +5608,7 @@ textarea {
   font-weight: 500;
   font-size: 40px;
   line-height: 1;
-  color: #fff;
+  color: var(--td-common-black);
 }
 .td-service-4-text p {
   font-weight: 400;

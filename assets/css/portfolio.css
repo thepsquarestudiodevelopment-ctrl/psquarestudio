@@ -127,6 +127,32 @@
   flex-direction: column;
 }
 
+/* Remove lightbox scrollbars completely */
+#lightboxOverlay {
+  overflow: hidden !important;
+}
+
+#lightboxContent {
+  overflow: hidden !important;
+  padding: 0 !important;
+  margin: 0 auto !important;
+  max-height: 90vh !important;
+}
+
+/* Make sure main area never exceeds the viewport */
+.lb-main {
+  max-height: 80vh !important;
+  overflow: hidden !important;
+}
+
+/* Ensure image/video adjusts and never causes scroll */
+.lb-main img,
+.lb-main video {
+  max-height: 80vh !important;
+  height: auto !important;
+  object-fit: contain !important;
+}
+
 /* content area */
 .portfolio-page .lb-main {
   width: 100%;

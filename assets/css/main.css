@@ -112,6 +112,7 @@
   --td-theme-2: #ff9857;
   --td-theme-3: #000000;
   --td-theme-4: #e08824;
+  --td-common-green-2: var(--td-theme-primary);
 
   --td-border-1: rgba(13, 36, 124, 0.15);
   /* Updated with navy */
@@ -6233,6 +6234,50 @@ textarea {
   transform: scale(1);
   top: 219px;
 }
+
+/* Custom styles for horizontal service layout */
+.service-horizontal-box {
+  border-top: none;
+  border-bottom: 1px solid rgba(28, 29, 31, 0.12);
+  border-left: none;
+  border-right: none;
+  border-radius: 0px;
+  position: relative;
+}
+
+.service-horizontal-box .divider-line {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background-color: rgba(28, 29, 31, 0.12);
+}
+
+.service-horizontal-box h3 {
+  font-weight: 600;
+  font-size: 26px;
+  margin-bottom: 0;
+}
+
+.service-horizontal-box .fst-italic {
+  font-style: italic;
+  margin-bottom: 1rem;
+}
+
+.service-horizontal-box .col-md-9 {
+  padding-left: 30px;
+}
+
+.service-horizontal-box ul {
+  list-style-type: disc;
+}
+
+.service-horizontal-box ul li {
+  list-style-type: disc;
+  margin-bottom: 5px;
+}
+
 @media only screen and (min-width: 992px) and (max-width: 1199px),
   only screen and (min-width: 768px) and (max-width: 991px),
   only screen and (min-width: 576px) and (max-width: 767px),
@@ -8173,6 +8218,7 @@ textarea {
 }
 .td-footer-4-bg {
   background: var(--td-common-green-2);
+  color: var(--td-common-white);
   border-radius: 15px;
   padding: 115px 30px 120px 30px;
 }
@@ -8181,8 +8227,9 @@ textarea {
     padding: 35px 30px 30px 30px;
   }
 }
+
 .td-footer-4-bg .td-portfolio-4-btn {
-  color: var(--td-common-black);
+  color: var(--td-common-white);
 }
 .td-footer-4-shape {
   position: absolute;
@@ -8201,7 +8248,7 @@ textarea {
   line-height: 83%;
   letter-spacing: -0.02em;
   text-align: center;
-  color: var(--td-theme-1);
+  color: var(--td-common-white);
 }
 @media only screen and (min-width: 768px) and (max-width: 991px),
   only screen and (min-width: 576px) and (max-width: 767px) {
@@ -8378,6 +8425,7 @@ textarea {
 }
 .td-footer-6-wrap .td-footer-form button {
   background: var(--td-common-green-2);
+  color: var(--td-common-white);
 }
 .td-footer-6-wrap .td-footer-copyright p {
   font-weight: 500;
@@ -9364,6 +9412,7 @@ textarea {
   background: var(--td-common-green-2);
   transform: scaleY(105%);
   border: transparent;
+  color: var(--td-common-white);
 }
 @media only screen and (min-width: 992px) and (max-width: 1199px),
   only screen and (min-width: 768px) and (max-width: 991px),
@@ -9523,6 +9572,7 @@ textarea {
 .td-video-4-wrap {
   width: 650px;
   background: var(--td-common-green-2);
+  color: var(--td-common-white);
   padding: 55px 60px 50px 60px;
   margin-top: 700px;
   float: right;
@@ -10282,10 +10332,12 @@ textarea {
 .td-pricing-6-wrap .price-btn.greens {
   border-color: var(--td-common-green-2);
   background: var(--td-common-green-2);
+  color: var(--td-common-white);
 }
 .td-pricing-6-wrap .price-btn:hover {
   border-color: var(--td-common-green-2);
   background: var(--td-common-green-2);
+  color: var(--td-common-white);
 }
 .td-pricing-6-list {
   padding: 30px 40px 40px 50px;
@@ -12400,9 +12452,9 @@ footer {
 
 /* ✅ Add this new section at the END of your CSS file */
 .td-brand-wrap img {
-  height: 80px;              /* uniform logo height */
-  width: auto;               /* keep proportions */
-  object-fit: contain;       /* ensures full logo is visible */
+  height: 80px; /* uniform logo height */
+  width: auto; /* keep proportions */
+  object-fit: contain; /* ensures full logo is visible */
   display: block;
   margin: 0 auto;
   /* filter: grayscale(100%); */

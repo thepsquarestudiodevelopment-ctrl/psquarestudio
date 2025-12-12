@@ -24,9 +24,16 @@
   display: flex;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 8px;
   padding: 8px 12px;
+}
+
+/* Center active filter on mobile */
+@media (max-width: 768px) {
+  .portfolio-page .td-portfolio-filter-btn {
+    justify-content: flex-start;
+  }
 }
 .portfolio-page .td-portfolio-filter-btn button {
   border: 0;
@@ -51,6 +58,40 @@
 /* mobile visual indicator */
 .portfolio-page .td-portfolio-filter-btn::-webkit-scrollbar { height: 6px; }
 .portfolio-page .td-portfolio-filter-btn::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.12); border-radius: 6px; }
+
+/* Ensure scrollbar is visible on mobile */
+.portfolio-page .td-portfolio-filter-btn {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0,0,0,0.12) transparent;
+}
+
+/* Add gradient fade effect to indicate more content */
+.portfolio-page .td-portfolio-filter-btn::before,
+.portfolio-page .td-portfolio-filter-btn::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 20px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.portfolio-page .td-portfolio-filter-btn::before {
+  left: 0;
+  background: linear-gradient(to right, white, transparent);
+}
+
+.portfolio-page .td-portfolio-filter-btn::after {
+  right: 0;
+  background: linear-gradient(to left, white, transparent);
+}
+
+.portfolio-page .td-portfolio-filter-btn[data-scrolled="true"]::before,
+.portfolio-page .td-portfolio-filter-btn[data-scrolled="true"]::after {
+  opacity: 1;
+}
 
 /* ============ PORTFOLIO GRID ============ */
 .portfolio-page .grid {

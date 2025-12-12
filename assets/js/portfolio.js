@@ -34,6 +34,24 @@
        ----------------------- */
     const scrollContainer = $("#portfolioFilterScroll");
     if (scrollContainer) {
+        // Add scroll indicator functionality
+        function updateScrollIndicator() {
+            if (scrollContainer.scrollWidth > scrollContainer.clientWidth) {
+                scrollContainer.setAttribute('data-scrolled', 'true');
+            } else {
+                scrollContainer.removeAttribute('data-scrolled');
+            }
+        }
+        
+        // Initial check
+        updateScrollIndicator();
+        
+        // Update on resize
+        window.addEventListener('resize', updateScrollIndicator);
+        
+        // Update on scroll
+        scrollContainer.addEventListener('scroll', updateScrollIndicator);
+        
         let isDown = false;
         let startX, scrollLeft;
         scrollContainer.addEventListener("mousedown", (e) => {
@@ -57,6 +75,7 @@
             const x = e.pageX - scrollContainer.offsetLeft;
             const walk = (x - startX) * 1.5;
             scrollContainer.scrollLeft = scrollLeft - walk;
+            updateScrollIndicator();
         });
 
         // touch
@@ -70,7 +89,17 @@
             const x = e.touches[0].pageX - scrollContainer.offsetLeft;
             const walk = (x - touchStartX) * 1.2;
             scrollContainer.scrollLeft = touchScrollLeft - walk;
+            updateScrollIndicator();
         }, { passive: true });
+        
+        // Add wheel scrolling support for better UX
+        scrollContainer.addEventListener('wheel', (e) => {
+            if (e.deltaY !== 0) {
+                e.preventDefault();
+                scrollContainer.scrollLeft += e.deltaY;
+                updateScrollIndicator();
+            }
+        }, { passive: false });
     }
 
     /* -----------------------
@@ -107,7 +136,7 @@
                     btn.setAttribute("aria-pressed", "true");
 
                     // center clicked filter button on mobile
-                    if (scrollContainer && window.innerWidth < 768) {
+                    if (scrollContainer) {
                         const btnRect = btn.getBoundingClientRect();
                         const containerRect = scrollContainer.getBoundingClientRect();
                         const offset = btnRect.left - containerRect.left - containerRect.width / 2 + btnRect.width / 2;

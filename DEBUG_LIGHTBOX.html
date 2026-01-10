@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Lightbox Debug Test</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+        background: #f5f5f5;
+      }
+      .debug-container {
+        max-width: 900px;
+        margin: 0 auto;
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+      h1 {
+        color: #333;
+        border-bottom: 3px solid #0b5eff;
+        padding-bottom: 10px;
+      }
+      .test-section {
+        margin: 20px 0;
+        padding: 15px;
+        background: #f9f9f9;
+        border-left: 4px solid #0b5eff;
+        border-radius: 4px;
+      }
+      .test-section h2 {
+        margin-top: 0;
+        color: #0b5eff;
+        font-size: 16px;
+      }
+      code {
+        background: #f0f0f0;
+        padding: 2px 6px;
+        border-radius: 3px;
+        font-family: monospace;
+      }
+      pre {
+        background: #282c34;
+        color: #abb2bf;
+        padding: 12px;
+        border-radius: 4px;
+        overflow-x: auto;
+      }
+      .status {
+        padding: 10px;
+        border-radius: 4px;
+        margin: 10px 0;
+        font-weight: bold;
+      }
+      .status.good {
+        background: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+      }
+      .status.bad {
+        background: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+      }
+      .status.info {
+        background: #d1ecf1;
+        color: #0c5460;
+        border: 1px solid #bee5eb;
+      }
+      button {
+        background: #0b5eff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+        margin: 5px 0;
+      }
+      button:hover {
+        background: #0a4acc;
+      }
+      .image-item {
+        display: inline-block;
+        margin: 10px;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        background: white;
+      }
+      .image-item img {
+        max-width: 100px;
+        height: 100px;
+        object-fit: cover;
+        border-radius: 3px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="debug-container">
+      <h1>🔧 Portfolio Lightbox Debug Assistant</h1>
+
+      <div class="test-section">
+        <h2>Step 1: Check Image Paths</h2>
+        <p>
+          Click the button below to scan your portfolio for images and verify
+          paths:
+        </p>
+        <button onclick="checkImagePaths()">Scan Portfolio Images</button>
+        <div id="imagePathsResult"></div>
+      </div>
+
+      <div class="test-section">
+        <h2>Step 2: Test Lightbox Opening</h2>
+        <p>Click the button below to open a test image in the lightbox:</p>
+        <button onclick="testImageLightbox()">Test Image Lightbox</button>
+        <div id="lightboxTestResult"></div>
+      </div>
+
+      <div class="test-section">
+        <h2>Step 3: Check Browser Console</h2>
+        <p>Open your browser's Developer Tools and check the Console tab:</p>
+        <ul>
+          <li>
+            Press <code>F12</code> or <code>Ctrl+Shift+I</code> (Windows) /
+            <code>Cmd+Option+I</code> (Mac)
+          </li>
+          <li>Go to the <code>Console</code> tab</li>
+          <li>
+            Refresh the page and look for lightbox initialization messages
+          </li>
+        </ul>
+        <button onclick="openDevTools()">Help: Open Developer Tools</button>
+        <div id="consoleHelper"></div>
+      </div>
+
+      <div class="test-section">
+        <h2>Step 4: Common Issues & Fixes</h2>
+        <ul>
+          <li>
+            <strong>Images not showing:</strong> Check that image paths like
+            <code>assets/img/portfolio/Graphic Design/1.jpg</code> exist on your
+            server
+          </li>
+          <li>
+            <strong>Paths relative to wrong location:</strong> Ensure paths are
+            relative to your HTML file location
+          </li>
+          <li>
+            <strong>CORS errors:</strong> If images are from external sources,
+            they need proper CORS headers
+          </li>
+          <li>
+            <strong>Lazy loading delay:</strong> Images might not load
+            immediately, wait a moment before clicking
+          </li>
+        </ul>
+      </div>
+
+      <div class="test-section">
+        <h2>Step 5: Direct Test</h2>
+        <p>
+          Try these test image URLs directly (replace with your actual paths):
+        </p>
+        <div id="directTestResult"></div>
+        <button onclick="testDirectImageLoad()">Test Direct Image Load</button>
+      </div>
+    </div>
+
+    <script>
+      function checkImagePaths() {
+        const result = document.getElementById("imagePathsResult");
+        result.innerHTML = '<p style="color: #666;">Scanning...</p>';
+
+        // Check if we're on the portfolio page
+        try {
+          const portfolioItems = document.querySelectorAll(
+            ".td-portfolio-filter-wrapper"
+          );
+
+          if (portfolioItems.length === 0) {
+            result.innerHTML =
+              '<div class="status bad">❌ No portfolio items found. Make sure you\'re running this on the portfolio.html page.</div>';
+            return;
+          }
+
+          let imageCount = 0;
+          let videoCount = 0;
+          let missingCount = 0;
+          const imagePaths = [];
+
+          portfolioItems.forEach((item, index) => {
+            const img = item.querySelector("img");
+            const video = item.querySelector("video");
+
+            if (img) {
+              imageCount++;
+              const src = img.src || img.dataset.src;
+              if (src) {
+                imagePaths.push({
+                  index,
+                  src,
+                  lazy: !img.src && img.dataset.src,
+                });
+              } else {
+                missingCount++;
+              }
+            } else if (video) {
+              videoCount++;
+            }
+          });
+
+          let html = `<div class="status good">✅ Found ${portfolioItems.length} portfolio items</div>`;
+          html += `<div class="status info">📊 Images: ${imageCount} | Videos: ${videoCount} | Missing paths: ${missingCount}</div>`;
+
+          if (imagePaths.length > 0) {
+            html += "<h3>Sample Image Paths:</h3><pre>";
+            imagePaths.slice(0, 5).forEach((item) => {
+              html += `Item ${item.index}: ${item.src} ${
+                item.lazy ? "(lazy-loaded)" : ""
+              }\n`;
+            });
+            html += "</pre>";
+          }
+
+          result.innerHTML = html;
+        } catch (e) {
+          result.innerHTML = `<div class="status bad">❌ Error: ${e.message}</div>`;
+        }
+      }
+
+      function testImageLightbox() {
+        const result = document.getElementById("lightboxTestResult");
+        result.innerHTML = "<p>Creating test lightbox...</p>";
+
+        try {
+          const modal = document.createElement("div");
+          modal.className = "portfolio-modal";
+          modal.style.cssText =
+            "position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: flex; align-items: center; justify-content: center; z-index: 9999; opacity: 1;";
+
+          const content = document.createElement("div");
+          content.style.cssText = "position: relative; text-align: center;";
+
+          const closeBtn = document.createElement("button");
+          closeBtn.textContent = "✕ Close";
+          closeBtn.style.cssText =
+            "position: absolute; top: -50px; right: 0; background: white; color: black; padding: 8px 15px;";
+          closeBtn.onclick = () => modal.remove();
+
+          const testImg = document.createElement("img");
+          testImg.src =
+            'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Crect fill="%230b5eff" width="400" height="300"/%3E%3Ctext x="50%25" y="50%25" font-size="24" fill="white" text-anchor="middle" dominant-baseline="middle"%3ELightbox Working! ✅%3C/text%3E%3C/svg%3E';
+          testImg.style.cssText =
+            "max-width: 90vw; max-height: 90vh; border-radius: 8px; box-shadow: 0 20px 60px rgba(0,0,0,0.3);";
+
+          content.appendChild(closeBtn);
+          content.appendChild(testImg);
+          modal.appendChild(content);
+          document.body.appendChild(modal);
+
+          result.innerHTML =
+            '<div class="status good">✅ Test lightbox opened! If you see a modal with "Lightbox Working!", the lightbox feature is functioning.</div>';
+        } catch (e) {
+          result.innerHTML = `<div class="status bad">❌ Error: ${e.message}</div>`;
+        }
+      }
+
+      function testDirectImageLoad() {
+        const result = document.getElementById("directTestResult");
+
+        // List of common image paths to test
+        const testPaths = [
+          "assets/img/portfolio/Graphic Design/1.jpg",
+          "assets/img/portfolio/Motion graphics/1.mp4",
+        ];
+
+        let html = "<p>Testing if image paths are accessible:</p><div>";
+
+        testPaths.forEach((path) => {
+          const img = new Image();
+          img.onload = () => {
+            document.getElementById(
+              "directTestResult"
+            ).innerHTML += `<div class="status good">✅ Loaded: ${path}</div>`;
+          };
+          img.onerror = () => {
+            document.getElementById(
+              "directTestResult"
+            ).innerHTML += `<div class="status bad">❌ Failed: ${path} - Check if file exists and path is correct</div>`;
+          };
+          img.src = path;
+        });
+
+        result.innerHTML = html + "<p>Testing...</p></div>";
+      }
+
+      function openDevTools() {
+        const result = document.getElementById("consoleHelper");
+        result.innerHTML = `<div class="status info">
+                Press <strong>F12</strong> to open Developer Tools<br>
+                Look for messages like: <code>Opening preview - Type: image Source: assets/img/portfolio/Graphic Design/1.jpg</code>
+            </div>`;
+      }
+
+      // Auto-run checks on page load
+      window.addEventListener("load", () => {
+        console.log(
+          "🔧 Debug page loaded. Click buttons above to diagnose issues."
+        );
+      });
+    </script>
+  </body>
+</html>

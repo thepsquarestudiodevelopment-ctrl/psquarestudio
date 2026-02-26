@@ -39,6 +39,7 @@
     <link rel="stylesheet" href="assets/css/effect-slicer.css" />
     <link rel="stylesheet" href="assets/css/animate.css" />
     <link rel="stylesheet" href="assets/css/defauls-spacing.css" />
+    <link rel="stylesheet" href="assets/css/portfolio-lightbox.css" />
 
     <style>
       /**********************************************
@@ -46,7 +47,7 @@
        (keeps template files as-is while preventing style leakage)
       **********************************************/
       .portfolio-page,
-      .portfolio-page * {
+      .portfolio-page *:not(i) {
         box-sizing: border-box;
         font-family: inherit;
         color: inherit;
@@ -70,6 +71,11 @@
         margin: 0;
         scroll-behavior: smooth;
         width: 100%;
+      }
+
+      /* remove underline from footer social icons */
+      .td-footer-3-social a {
+        text-decoration: none !important;
       }
 
       .portfolio-page .td-portfolio-filter-btn button {
@@ -436,545 +442,6 @@
         -webkit-user-drag: none;
         user-select: none;
       }
-
-      /* Portfolio Modal/Lightbox Styles */
-      .portfolio-modal {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.95);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        opacity: 0;
-        transition: opacity 0.3s ease;
-        z-index: 9999;
-        overflow: auto;
-        overflow-x: hidden;
-        padding: 0;
-        margin: 0;
-      }
-
-      .portfolio-modal.active {
-        opacity: 1;
-      }
-
-      .portfolio-modal-content {
-        position: relative;
-        max-width: 100vw;
-        max-height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        animation: modalSlideIn 0.3s ease;
-        width: 100%;
-        height: 100%;
-        padding: 0;
-        margin: 0;
-      }
-
-      .portfolio-modal-inner {
-        position: relative;
-        width: 100%;
-        height: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 40px 60px;
-        box-sizing: border-box;
-      }
-
-      @keyframes modalSlideIn {
-        from {
-          transform: scale(0.8);
-          opacity: 0;
-        }
-        to {
-          transform: scale(1);
-          opacity: 1;
-        }
-      }
-
-      .portfolio-modal-image,
-      .portfolio-modal-video {
-        max-width: 100%;
-        max-height: 100%;
-        height: auto;
-        width: auto;
-        object-fit: contain;
-        border-radius: 8px;
-        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-      }
-
-      .portfolio-modal-video {
-        background: #000;
-      }
-
-      .portfolio-modal-close {
-        position: absolute;
-        top: 15px;
-        right: 15px;
-        background: rgba(255, 255, 255, 0.2);
-        border: 2px solid white;
-        color: #fff;
-        font-size: 32px;
-        cursor: pointer;
-        padding: 0;
-        width: 45px;
-        height: 45px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.2s ease;
-        border-radius: 50%;
-        z-index: 10001;
-        min-width: 45px;
-        min-height: 45px;
-      }
-
-      .portfolio-modal-close:hover {
-        background: rgba(255, 255, 255, 0.4);
-        transform: rotate(90deg);
-      }
-
-      /* Navigation Buttons */
-      .portfolio-nav-btn {
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        background: rgba(255, 255, 255, 0.2);
-        border: 2px solid white;
-        color: white;
-        font-size: 24px;
-        cursor: pointer;
-        padding: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.2s ease;
-        border-radius: 50%;
-        width: 50px;
-        height: 50px;
-        z-index: 10000;
-        user-select: none;
-        min-width: 50px;
-        min-height: 50px;
-      }
-
-      .portfolio-nav-btn:hover {
-        background: rgba(255, 255, 255, 0.4);
-      }
-
-      .portfolio-nav-btn.prev {
-        left: 15px;
-      }
-
-      .portfolio-nav-btn.next {
-        right: 15px;
-      }
-
-      .portfolio-nav-btn:disabled {
-        opacity: 0.3;
-        cursor: not-allowed;
-      }
-
-      .portfolio-nav-btn:disabled:hover {
-        background: rgba(255, 255, 255, 0.2);
-      }
-
-      /* Counter display */
-      .portfolio-counter {
-        position: absolute;
-        bottom: 15px;
-        left: 50%;
-        transform: translateX(-50%);
-        background: rgba(255, 255, 255, 0.2);
-        color: white;
-        padding: 8px 16px;
-        border-radius: 20px;
-        font-size: 14px;
-        font-weight: 600;
-        z-index: 10000;
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        white-space: nowrap;
-      }
-
-      /* ========== RESPONSIVE ADJUSTMENTS ========== */
-
-      /* Ultra Large Screens (1920px+) */
-      @media (min-width: 1920px) {
-        .portfolio-modal-inner {
-          padding: 50px 80px;
-        }
-
-        .portfolio-nav-btn {
-          width: 60px;
-          height: 60px;
-          min-width: 60px;
-          min-height: 60px;
-          font-size: 28px;
-        }
-
-        .portfolio-nav-btn.prev {
-          left: 30px;
-        }
-
-        .portfolio-nav-btn.next {
-          right: 30px;
-        }
-
-        .portfolio-modal-close {
-          width: 50px;
-          height: 50px;
-          min-width: 50px;
-          min-height: 50px;
-          font-size: 36px;
-          top: 20px;
-          right: 20px;
-        }
-
-        .portfolio-counter {
-          font-size: 16px;
-          padding: 10px 20px;
-          bottom: 20px;
-        }
-      }
-
-      /* Large Screens (1440px - 1919px) */
-      @media (min-width: 1440px) and (max-width: 1919px) {
-        .portfolio-modal-inner {
-          padding: 45px 70px;
-        }
-
-        .portfolio-nav-btn {
-          width: 55px;
-          height: 55px;
-          min-width: 55px;
-          min-height: 55px;
-          font-size: 26px;
-        }
-
-        .portfolio-nav-btn.prev {
-          left: 25px;
-        }
-
-        .portfolio-nav-btn.next {
-          right: 25px;
-        }
-
-        .portfolio-modal-close {
-          width: 48px;
-          height: 48px;
-          min-width: 48px;
-          min-height: 48px;
-          font-size: 34px;
-        }
-
-        .portfolio-counter {
-          font-size: 15px;
-          padding: 9px 18px;
-        }
-      }
-
-      /* Desktop (1200px - 1439px) */
-      @media (min-width: 1200px) and (max-width: 1439px) {
-        .portfolio-modal-inner {
-          padding: 40px 60px;
-        }
-
-        .portfolio-nav-btn {
-          width: 50px;
-          height: 50px;
-          min-width: 50px;
-          min-height: 50px;
-          font-size: 24px;
-        }
-
-        .portfolio-nav-btn.prev {
-          left: 20px;
-        }
-
-        .portfolio-nav-btn.next {
-          right: 20px;
-        }
-
-        .portfolio-modal-close {
-          width: 45px;
-          height: 45px;
-          min-width: 45px;
-          min-height: 45px;
-          font-size: 32px;
-        }
-
-        .portfolio-counter {
-          font-size: 14px;
-          padding: 8px 16px;
-        }
-      }
-
-      /* Laptop/Desktop (1024px - 1199px) */
-      @media (min-width: 1024px) and (max-width: 1199px) {
-        .portfolio-modal-inner {
-          padding: 35px 50px;
-        }
-
-        .portfolio-nav-btn {
-          width: 46px;
-          height: 46px;
-          min-width: 46px;
-          min-height: 46px;
-          font-size: 22px;
-          padding: 0;
-        }
-
-        .portfolio-nav-btn.prev {
-          left: 15px;
-        }
-
-        .portfolio-nav-btn.next {
-          right: 15px;
-        }
-
-        .portfolio-modal-close {
-          width: 42px;
-          height: 42px;
-          min-width: 42px;
-          min-height: 42px;
-          font-size: 30px;
-          top: 12px;
-          right: 12px;
-        }
-
-        .portfolio-counter {
-          font-size: 13px;
-          padding: 7px 14px;
-          bottom: 12px;
-        }
-      }
-
-      /* Tablet Landscape (800px - 1023px) */
-      @media (min-width: 800px) and (max-width: 1023px) {
-        .portfolio-modal-inner {
-          padding: 30px 40px;
-        }
-
-        .portfolio-modal-image,
-        .portfolio-modal-video {
-          max-height: calc(100vh - 100px);
-        }
-
-        .portfolio-nav-btn {
-          width: 42px;
-          height: 42px;
-          min-width: 42px;
-          min-height: 42px;
-          font-size: 20px;
-        }
-
-        .portfolio-nav-btn.prev {
-          left: 12px;
-        }
-
-        .portfolio-nav-btn.next {
-          right: 12px;
-        }
-
-        .portfolio-modal-close {
-          width: 40px;
-          height: 40px;
-          min-width: 40px;
-          min-height: 40px;
-          font-size: 28px;
-          top: 10px;
-          right: 10px;
-        }
-
-        .portfolio-counter {
-          font-size: 12px;
-          padding: 6px 12px;
-          bottom: 10px;
-        }
-      }
-
-      /* Tablet Portrait (600px - 799px) */
-      @media (min-width: 600px) and (max-width: 799px) {
-        .portfolio-modal-inner {
-          padding: 25px 30px;
-        }
-
-        .portfolio-modal-image,
-        .portfolio-modal-video {
-          max-height: calc(100vh - 90px);
-        }
-
-        .portfolio-nav-btn {
-          width: 40px;
-          height: 40px;
-          min-width: 40px;
-          min-height: 40px;
-          font-size: 18px;
-        }
-
-        .portfolio-nav-btn.prev {
-          left: 10px;
-        }
-
-        .portfolio-nav-btn.next {
-          right: 10px;
-        }
-
-        .portfolio-modal-close {
-          width: 38px;
-          height: 38px;
-          min-width: 38px;
-          min-height: 38px;
-          font-size: 26px;
-          top: 10px;
-          right: 10px;
-        }
-
-        .portfolio-counter {
-          font-size: 11px;
-          padding: 5px 10px;
-          bottom: 8px;
-        }
-      }
-
-      /* Large Mobile (480px - 599px) */
-      @media (min-width: 480px) and (max-width: 599px) {
-        .portfolio-modal-inner {
-          padding: 20px 20px;
-        }
-
-        .portfolio-modal-image,
-        .portfolio-modal-video {
-          max-height: calc(100vh - 80px);
-        }
-
-        .portfolio-nav-btn {
-          width: 38px;
-          height: 38px;
-          min-width: 38px;
-          min-height: 38px;
-          font-size: 16px;
-        }
-
-        .portfolio-nav-btn.prev {
-          left: 8px;
-        }
-
-        .portfolio-nav-btn.next {
-          right: 8px;
-        }
-
-        .portfolio-modal-close {
-          width: 36px;
-          height: 36px;
-          min-width: 36px;
-          min-height: 36px;
-          font-size: 24px;
-          top: 8px;
-          right: 8px;
-        }
-
-        .portfolio-counter {
-          font-size: 10px;
-          padding: 4px 8px;
-          bottom: 6px;
-        }
-      }
-
-      /* Small Mobile (320px - 479px) */
-      @media (max-width: 479px) {
-        .portfolio-modal-inner {
-          padding: 15px 15px;
-        }
-
-        .portfolio-modal-image,
-        .portfolio-modal-video {
-          max-height: calc(100vh - 70px);
-          max-width: calc(100vw - 30px);
-        }
-
-        .portfolio-nav-btn {
-          width: 36px;
-          height: 36px;
-          min-width: 36px;
-          min-height: 36px;
-          font-size: 14px;
-        }
-
-        .portfolio-nav-btn.prev {
-          left: 5px;
-        }
-
-        .portfolio-nav-btn.next {
-          right: 5px;
-        }
-
-        .portfolio-modal-close {
-          width: 34px;
-          height: 34px;
-          min-width: 34px;
-          min-height: 34px;
-          font-size: 22px;
-          top: 6px;
-          right: 6px;
-        }
-
-        .portfolio-counter {
-          font-size: 9px;
-          padding: 3px 6px;
-          bottom: 4px;
-        }
-      }
-
-      /* Ultra Small Mobile (< 320px) */
-      @media (max-width: 319px) {
-        .portfolio-modal-inner {
-          padding: 10px 10px;
-        }
-
-        .portfolio-modal-image,
-        .portfolio-modal-video {
-          max-height: calc(100vh - 60px);
-          max-width: calc(100vw - 20px);
-        }
-
-        .portfolio-nav-btn {
-          width: 32px;
-          height: 32px;
-          min-width: 32px;
-          min-height: 32px;
-          font-size: 12px;
-        }
-
-        .portfolio-nav-btn.prev {
-          left: 3px;
-        }
-
-        .portfolio-nav-btn.next {
-          right: 3px;
-        }
-
-        .portfolio-modal-close {
-          width: 32px;
-          height: 32px;
-          min-width: 32px;
-          min-height: 32px;
-          font-size: 20px;
-          top: 5px;
-          right: 5px;
-        }
-
-        .portfolio-counter {
-          font-size: 8px;
-          padding: 2px 4px;
-          bottom: 2px;
-        }
-      }
     </style>
 
     <!-- Google tag (gtag.js) -->
@@ -1040,22 +507,22 @@
     <header class="header-area">
       <div class="header-container">
         <div class="logo">
-          <a href="index.html"
+          <a href="index"
             ><img src="assets/img/logo/Asset1.png" alt="Company Logo"
           /></a>
         </div>
 
         <nav>
           <ul class="nav-menu">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="about.html">Who We Are</a></li>
-            <li><a href="portfolio.html">Portfolio</a></li>
-            <li><a href="service.html">Services</a></li>
-            <li><a href="contact.html">Contact Us</a></li>
+            <li><a href="index">Home</a></li>
+            <li><a href="about">Who We Are</a></li>
+            <li><a href="portfolio">Portfolio</a></li>
+            <li><a href="service">Services</a></li>
+            <li><a href="contact">Contact Us</a></li>
             <li>
               <button
                 class="cta-button"
-                onclick="window.location.href='contact.html'"
+                onclick=\"window.location.href='contact'\"
               >
                 Get Started
               </button>
@@ -1081,13 +548,13 @@
       >
         <button class="close-menu" id="closeMenu">×</button>
         <ul>
-          <li><a href="index.html">Home</a></li>
-          <li><a href="about.html">Who We Are</a></li>
-          <li><a href="portfolio.html">Portfolio</a></li>
-          <li><a href="service.html">Services</a></li>
-          <li><a href="contact.html">Contact Us</a></li>
+          <li><a href="index">Home</a></li>
+          <li><a href="about">Who We Are</a></li>
+          <li><a href="portfolio">Portfolio</a></li>
+          <li><a href="service">Services</a></li>
+          <li><a href="contact">Contact Us</a></li>
         </ul>
-        <a href="contact.html"
+        <a href="contact"
           ><button class="cta-button">Get Started</button></a
         >
       </div>
@@ -2202,8 +1669,8 @@
           </div>
         </main>
 
-        <!-- footer (kept) -->
 
+        <!-- footer (kept) -->
         <!-- footer (kept) -->
         <footer class="px-30">
           <br />
@@ -2265,14 +1732,14 @@
                     <div class="td-footer-3-menu mb-10">
                       <ul>
                         <li>
-                          <a href="about.html">Who We Are</a>
+                          <a href=\"about\">Who We Are</a>
                         </li>
                         <li>
-                          <a href="portfolio.html">Portfolio</a>
+                          <a href=\"portfolio\">Portfolio</a>
                         </li>
-                        <li><a href="service.html">Services</a></li>
+                        <li><a href=\"service\">Services</a></li>
                         <!-- <li><a href="#">Blog</a></li> -->
-                        <li><a href="contact.html">Contact</a></li>
+                        <li><a href=\"contact\">Contact</a></li>
                       </ul>
                     </div>
                   </div>
@@ -2315,6 +1782,24 @@
     <script src="assets/js/main.js"></script>
 
     <script src="assets/js/header.js"></script>
+
+    <!-- Modal Skeleton for Litebox -->
+    <div id="portfolioModal" class="portfolio-modal" aria-hidden="true" role="dialog">
+      <div class="portfolio-modal-header">
+        <div class="portfolio-counter" id="modalCounter"></div>
+        <button class="portfolio-modal-close" id="modalClose" aria-label="Close preview">&times;</button>
+      </div>
+      <div class="portfolio-modal-content" id="modalContent">
+        <button class="portfolio-nav-btn prev" id="modalPrev" aria-label="Previous">&lang;</button>
+        <div class="portfolio-modal-inner" id="modalInner">
+          <!-- Content injected here -->
+        </div>
+        <button class="portfolio-nav-btn next" id="modalNext" aria-label="Next">&rang;</button>
+      </div>
+      <div class="portfolio-thumb-strip" id="modalThumbStrip">
+        <!-- Thumbs injected here -->
+      </div>
+    </div>
 
     <!-- INLINE portfolio logic (copy of assets/js/portfolio.js) -->
     <script>
@@ -2378,403 +1863,240 @@
           );
         }
 
+        // Global state
+        let iso;
+        let visibleItems = [];
+        let currentIndex = 0;
+
         // Isotope init
         function initIsotope() {
           const grid = document.getElementById("portfolioGrid");
-          const filterButtons = Array.from(
-            document.querySelectorAll(".td-portfolio-filter-btn button")
-          );
           if (!grid) return;
-          imagesLoaded(grid, function () {
-            if (typeof Isotope === "undefined") {
-              console.warn("Isotope not found. Skipping Isotope layout.");
-              return;
-            }
-            const iso = new Isotope(grid, {
-              itemSelector: ".grid-item",
-              layoutMode: "masonry",
-              percentPosition: true,
-              masonry: { columnWidth: ".grid-item" },
-            });
-            filterButtons.forEach((btn) => {
-              btn.addEventListener("click", function () {
-                const filterValue = btn.getAttribute("data-filter") || "*";
-                iso.arrange({ filter: filterValue });
-                filterButtons.forEach((b) => {
-                  b.classList.remove("active");
-                  b.setAttribute("aria-pressed", "false");
-                });
-                btn.classList.add("active");
-                btn.setAttribute("aria-pressed", "true");
-                if (scrollContainer && window.innerWidth < 768) {
-                  const btnRect = btn.getBoundingClientRect();
-                  const containerRect = scrollContainer.getBoundingClientRect();
-                  const offset =
-                    btnRect.left -
-                    containerRect.left -
-                    containerRect.width / 2 +
-                    btnRect.width / 2;
-                  scrollContainer.scrollBy({
-                    left: offset,
-                    behavior: "smooth",
-                  });
-                }
-              });
-            });
-            window.addEventListener("resize", () => iso.layout());
+
+          // Initialize Isotope immediately
+          iso = new Isotope(grid, {
+            itemSelector: ".grid-item",
+            layoutMode: "masonry",
+            percentPosition: true,
+            masonry: { columnWidth: ".grid-item" },
           });
-        }
-        if (document.readyState === "loading") {
-          document.addEventListener("DOMContentLoaded", initIsotope);
-        } else {
-          initIsotope();
+
+          // Layout on image load for speed
+          grid.addEventListener("load", (e) => {
+            if (e.target.tagName === "IMG") {
+              iso.layout();
+            }
+          }, true);
+
+          // Filter buttons
+          const filterButtons = document.querySelectorAll(".td-portfolio-filter-btn button");
+          filterButtons.forEach((btn) => {
+            btn.addEventListener("click", function () {
+              const filterValue = btn.getAttribute("data-filter") || "*";
+              iso.arrange({ filter: filterValue });
+              filterButtons.forEach((b) => b.classList.remove("active"));
+              btn.classList.add("active");
+              
+              // Scroll filter into view on mobile
+              const scrollContainer = document.getElementById("portfolioFilterScroll");
+              if (scrollContainer && window.innerWidth < 768) {
+                const btnRect = btn.getBoundingClientRect();
+                const containerRect = scrollContainer.getBoundingClientRect();
+                const offset = btnRect.left - containerRect.left - containerRect.width / 2 + btnRect.width / 2;
+                scrollContainer.scrollBy({ left: offset, behavior: "smooth" });
+              }
+            });
+          });
+
+          window.addEventListener("resize", () => iso.layout());
         }
 
         // Lazy loading
         function setupLazy() {
-          const lazyImages = Array.from(document.querySelectorAll("img.lazy"));
-          const lazyVideos = Array.from(
-            document.querySelectorAll("video.lazy-video")
-          );
-          if ("IntersectionObserver" in window) {
-            const imgObserver = new IntersectionObserver(
-              (entries) => {
-                entries.forEach((entry) => {
-                  if (entry.isIntersecting) {
-                    const img = entry.target;
-                    const src = img.dataset.src;
-                    if (src) {
-                      img.src = src;
-                      img.removeAttribute("data-src");
-                    }
-                    img.classList.remove("lazy");
-                    imgObserver.unobserve(img);
+          const lazyContent = document.querySelectorAll("img.lazy, video.lazy-video");
+          const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                const el = entry.target;
+                const src = el.dataset.src;
+                if (el.tagName === "IMG") {
+                  el.src = src;
+                  el.onload = () => {
+                    el.classList.add("loaded");
+                    if (iso) iso.layout();
+                  };
+                  el.classList.remove("lazy");
+                } else if (el.tagName === "VIDEO") {
+                  if (!el.querySelector("source")) {
+                    const source = document.createElement("source");
+                    source.src = src;
+                    source.type = "video/mp4";
+                    el.appendChild(source);
                   }
-                });
-              },
-              { rootMargin: "200px 0px" }
-            );
-            lazyImages.forEach((img) => imgObserver.observe(img));
-
-            const vidObserver = new IntersectionObserver(
-              (entries) => {
-                entries.forEach((entry) => {
-                  if (entry.isIntersecting) {
-                    const video = entry.target;
-                    const src = video.dataset.src;
-                    if (src) {
-                      if (!video.querySelector("source")) {
-                        const source = document.createElement("source");
-                        source.src = src;
-                        source.type = "video/mp4";
-                        video.appendChild(source);
-                      }
-                    }
-                    if (video.dataset && video.dataset.thumb)
-                      try {
-                        video.setAttribute("poster", video.dataset.thumb);
-                      } catch (e) {}
-                    video.load();
-                    video.classList.remove("lazy-video");
-                    vidObserver.unobserve(video);
-                  }
-                });
-              },
-              { rootMargin: "400px 0px" }
-            );
-            lazyVideos.forEach((v) => vidObserver.observe(v));
-          } else {
-            lazyImages.forEach((img) => {
-              if (img.dataset && img.dataset.src) img.src = img.dataset.src;
-              img.classList.remove("lazy");
-            });
-            lazyVideos.forEach((video) => {
-              if (
-                video.dataset &&
-                video.dataset.src &&
-                !video.querySelector("source")
-              ) {
-                const source = document.createElement("source");
-                source.src = video.dataset.src;
-                source.type = "video/mp4";
-                video.appendChild(source);
-              }
-              if (video.dataset && video.dataset.thumb)
-                try {
-                  video.setAttribute("poster", video.dataset.thumb);
-                } catch (e) {}
-              video.load();
-              video.classList.remove("lazy-video");
-            });
-          }
-        }
-        if (document.readyState === "loading") {
-          document.addEventListener("DOMContentLoaded", setupLazy);
-        } else {
-          setupLazy();
-        }
-
-        // Portfolio item preview lightbox
-        (function portfolioLightbox() {
-          let currentIndex = 0;
-          let visibleItems = [];
-
-          function getVisibleItems() {
-            // Get all portfolio items that are currently visible (not display: none by Isotope)
-            const allItems = Array.from(
-              document.querySelectorAll(".td-portfolio-filter-wrapper")
-            );
-            return allItems.filter((item) => {
-              const style = window.getComputedStyle(item.parentElement);
-              return style.display !== "none";
-            });
-          }
-
-          function setupPortfolioItems() {
-            const portfolioItems = document.querySelectorAll(
-              ".td-portfolio-filter-wrapper"
-            );
-
-            portfolioItems.forEach((item) => {
-              // Determine if this is image or video
-              const img = item.querySelector("img");
-              const video = item.querySelector("video");
-              let type, src;
-
-              if (img) {
-                type = "image";
-                // Use actual src if loaded, otherwise use data-src
-                src = img.src || img.dataset.src;
-              } else if (video) {
-                type = "video";
-                // Get video source from data-src or from <source> tag
-                src = video.dataset.src;
-                if (!src && video.querySelector("source")) {
-                  src = video.querySelector("source").src;
+                  if (el.dataset.thumb) el.poster = el.dataset.thumb;
+                  el.load();
+                  el.classList.remove("lazy-video");
                 }
-              }
-
-              if (type && src) {
-                item.classList.add("portfolio-item");
-                item.setAttribute("data-type", type);
-                item.setAttribute("data-src", src);
-
-                // Click handler
-                item.addEventListener("click", () => {
-                  // Get current src in case it was lazy-loaded after initial setup
-                  let currentSrc = src;
-                  if (type === "image" && img) {
-                    currentSrc = img.src || img.dataset.src;
-                  } else if (type === "video" && video) {
-                    currentSrc =
-                      video.dataset.src ||
-                      (video.querySelector("source") &&
-                        video.querySelector("source").src) ||
-                      src;
-                  }
-                  visibleItems = getVisibleItems();
-                  currentIndex = visibleItems.indexOf(item);
-                  openPortfolioPreview(currentIndex);
-                });
-
-                // Keyboard handler (Enter and Space)
-                item.addEventListener("keydown", (e) => {
-                  if (e.key === "Enter" || e.key === " ") {
-                    e.preventDefault();
-                    visibleItems = getVisibleItems();
-                    currentIndex = visibleItems.indexOf(item);
-                    openPortfolioPreview(currentIndex);
-                  }
-                });
+                observer.unobserve(el);
               }
             });
-          }
+          }, { rootMargin: "200px 0px" });
+          lazyContent.forEach((el) => observer.observe(el));
+        }
 
-          function openPortfolioPreview(index) {
-            visibleItems = getVisibleItems();
-            if (index < 0 || index >= visibleItems.length) return;
+        // Premium Lightbox
+        const modal = document.getElementById("portfolioModal");
+        const modalInner = document.getElementById("modalInner");
+        const modalCounter = document.getElementById("modalCounter");
+        const modalThumbStrip = document.getElementById("modalThumbStrip");
+        const modalPrev = document.getElementById("modalPrev");
+        const modalNext = document.getElementById("modalNext");
+        const modalClose = document.getElementById("modalClose");
+        const modalContent = document.getElementById("modalContent");
 
-            currentIndex = index;
-            const item = visibleItems[currentIndex];
+        function setupPortfolioLightbox() {
+          const items = Array.from(document.querySelectorAll(".td-portfolio-filter-wrapper"));
+          
+          // Generate Thumbnails once
+          modalThumbStrip.innerHTML = "";
+          items.forEach((item, index) => {
             const img = item.querySelector("img");
             const video = item.querySelector("video");
-            let type, src;
-
+            const thumb = document.createElement("div");
+            thumb.className = "portfolio-thumb";
+            thumb.dataset.index = index;
+            
             if (img) {
-              type = "image";
-              src = img.src || img.dataset.src;
+              const tImg = document.createElement("img");
+              tImg.src = img.dataset.src || img.src;
+              thumb.appendChild(tImg);
             } else if (video) {
-              type = "video";
-              src =
-                video.dataset.src ||
-                (video.querySelector("source") &&
-                  video.querySelector("source").src);
+              const tVid = document.createElement("video");
+              tVid.src = video.dataset.src || (video.querySelector("source") && video.querySelector("source").src);
+              tVid.muted = true;
+              thumb.appendChild(tVid);
             }
 
-            if (!src) return;
+            thumb.addEventListener("click", () => openPreview(index));
+            modalThumbStrip.appendChild(thumb);
 
-            if (type === "image") {
-              openImagePreview(src);
-            } else if (type === "video") {
-              openVideoPreview(src);
-            }
-          }
-
-          function openImagePreview(src) {
-            if (!src) {
-              console.warn("No image source provided");
-              return;
-            }
-
-            const modal = document.createElement("div");
-            modal.className = "portfolio-modal";
-            modal.innerHTML = `
-              <div class="portfolio-modal-content">
-                <button class="portfolio-modal-close" aria-label="Close preview">&times;</button>
-                <button class="portfolio-nav-btn prev" aria-label="Previous image">❮</button>
-                <button class="portfolio-nav-btn next" aria-label="Next image">❯</button>
-                <div class="portfolio-modal-inner">
-                  <img src="${src}" alt="Portfolio preview" class="portfolio-modal-image" onerror="this.parentElement.innerHTML = '<p style=\"color: #fff; text-align: center;\">Error loading image</p>'" />
-                </div>
-                <div class="portfolio-counter">${currentIndex + 1} / ${
-              visibleItems.length
-            }</div>
-              </div>
-            `;
-
-            document.body.appendChild(modal);
-
-            // Trigger animation
-            setTimeout(() => modal.classList.add("active"), 10);
-
-            const closeBtn = modal.querySelector(".portfolio-modal-close");
-            const prevBtn = modal.querySelector(".portfolio-nav-btn.prev");
-            const nextBtn = modal.querySelector(".portfolio-nav-btn.next");
-
-            // Update button states
-            prevBtn.disabled = currentIndex === 0;
-            nextBtn.disabled = currentIndex === visibleItems.length - 1;
-
-            closeBtn.addEventListener("click", () => closeModal(modal));
-            prevBtn.addEventListener("click", () => {
-              closeModal(modal);
-              if (currentIndex > 0) {
-                openPortfolioPreview(currentIndex - 1);
-              }
+            // Item click
+            item.addEventListener("click", () => {
+              visibleItems = getVisibleItems();
+              currentIndex = visibleItems.indexOf(item);
+              openPreview(currentIndex, true);
             });
-            nextBtn.addEventListener("click", () => {
-              closeModal(modal);
-              if (currentIndex < visibleItems.length - 1) {
-                openPortfolioPreview(currentIndex + 1);
-              }
-            });
+          });
+        }
 
-            // Close on click outside
-            modal.addEventListener("click", (e) => {
-              if (e.target === modal) closeModal(modal);
-            });
+        function getVisibleItems() {
+          return Array.from(document.querySelectorAll(".td-portfolio-filter-wrapper")).filter(item => {
+            return window.getComputedStyle(item.parentElement).display !== "none";
+          });
+        }
 
-            // Keyboard navigation
-            const keyHandler = (e) => {
-              if (e.key === "Escape") {
-                closeModal(modal);
-                document.removeEventListener("keydown", keyHandler);
-              } else if (e.key === "ArrowLeft" && currentIndex > 0) {
-                closeModal(modal);
-                openPortfolioPreview(currentIndex - 1);
-              } else if (
-                e.key === "ArrowRight" &&
-                currentIndex < visibleItems.length - 1
-              ) {
-                closeModal(modal);
-                openPortfolioPreview(currentIndex + 1);
-              }
-            };
-            document.addEventListener("keydown", keyHandler);
-          }
+        function openPreview(index, isFromItemClick = false) {
+          const allItems = Array.from(document.querySelectorAll(".td-portfolio-filter-wrapper"));
+          const item = allItems[index];
+          if (!item) return;
 
-          function openVideoPreview(src) {
-            const modal = document.createElement("div");
-            modal.className = "portfolio-modal";
-            modal.innerHTML = `
-              <div class="portfolio-modal-content">
-                <button class="portfolio-modal-close" aria-label="Close preview">&times;</button>
-                <button class="portfolio-nav-btn prev" aria-label="Previous video">❮</button>
-                <button class="portfolio-nav-btn next" aria-label="Next video">❯</button>
-                <div class="portfolio-modal-inner">
-                  <video class="portfolio-modal-video" controls autoplay>
-                    <source src="${src}" type="video/mp4">
-                    Your browser does not support the video tag.
-                  </video>
-                </div>
-                <div class="portfolio-counter">${currentIndex + 1} / ${
-              visibleItems.length
-            }</div>
-              </div>
-            `;
-
-            document.body.appendChild(modal);
-
-            // Trigger animation
-            setTimeout(() => modal.classList.add("active"), 10);
-
-            const closeBtn = modal.querySelector(".portfolio-modal-close");
-            const prevBtn = modal.querySelector(".portfolio-nav-btn.prev");
-            const nextBtn = modal.querySelector(".portfolio-nav-btn.next");
-
-            // Update button states
-            prevBtn.disabled = currentIndex === 0;
-            nextBtn.disabled = currentIndex === visibleItems.length - 1;
-
-            closeBtn.addEventListener("click", () => closeModal(modal));
-            prevBtn.addEventListener("click", () => {
-              closeModal(modal);
-              if (currentIndex > 0) {
-                openPortfolioPreview(currentIndex - 1);
-              }
-            });
-            nextBtn.addEventListener("click", () => {
-              closeModal(modal);
-              if (currentIndex < visibleItems.length - 1) {
-                openPortfolioPreview(currentIndex + 1);
-              }
-            });
-
-            // Close on click outside
-            modal.addEventListener("click", (e) => {
-              if (e.target === modal) closeModal(modal);
-            });
-
-            // Keyboard navigation
-            const keyHandler = (e) => {
-              if (e.key === "Escape") {
-                closeModal(modal);
-                document.removeEventListener("keydown", keyHandler);
-              } else if (e.key === "ArrowLeft" && currentIndex > 0) {
-                closeModal(modal);
-                openPortfolioPreview(currentIndex - 1);
-              } else if (
-                e.key === "ArrowRight" &&
-                currentIndex < visibleItems.length - 1
-              ) {
-                closeModal(modal);
-                openPortfolioPreview(currentIndex + 1);
-              }
-            };
-            document.addEventListener("keydown", keyHandler);
-          }
-
-          function closeModal(modal) {
-            modal.classList.remove("active");
-            setTimeout(() => modal.remove(), 300);
-          }
-
-          if (document.readyState === "loading") {
-            document.addEventListener("DOMContentLoaded", setupPortfolioItems);
+          currentIndex = index;
+          const img = item.querySelector("img");
+          const video = item.querySelector("video");
+          
+          // Use data-src if available (for lazy loaded items), otherwise fallback to src
+          const src = img ? (img.dataset.src || img.src) : (video.dataset.src || (video.querySelector("source") && video.querySelector("source").src));
+          
+          modalInner.innerHTML = "";
+          if (img) {
+            const mImg = document.createElement("img");
+            mImg.src = src;
+            mImg.className = "portfolio-modal-image";
+            modalInner.appendChild(mImg);
           } else {
-            setupPortfolioItems();
+            const mVid = document.createElement("video");
+            mVid.src = src;
+            mVid.controls = true;
+            mVid.autoplay = true;
+            mVid.className = "portfolio-modal-video";
+            modalInner.appendChild(mVid);
           }
-        })();
+
+          // Update Counter
+          const currentVisibleItems = getVisibleItems();
+          const vIndex = currentVisibleItems.indexOf(item);
+          modalCounter.textContent = `${vIndex + 1} / ${currentVisibleItems.length}`;
+
+          // Update Thumbs
+          document.querySelectorAll(".portfolio-thumb").forEach(t => t.classList.remove("active"));
+          const activeThumb = modalThumbStrip.children[index];
+          if (activeThumb) {
+            activeThumb.classList.add("active");
+            activeThumb.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+          }
+
+          // Nav buttons visibility based on visible filter
+          modalPrev.disabled = vIndex === 0;
+          modalNext.disabled = vIndex === currentVisibleItems.length - 1;
+
+          if (isFromItemClick) {
+            modal.classList.add("active");
+            modal.setAttribute("aria-hidden", "false");
+            document.body.style.overflow = "hidden"; // Lock scroll
+          }
+        }
+
+        // Nav click handlers
+        modalPrev.addEventListener("click", () => {
+          const currentVisible = getVisibleItems();
+          const allItems = Array.from(document.querySelectorAll(".td-portfolio-filter-wrapper"));
+          const currentItem = allItems[currentIndex];
+          const vIndex = currentVisible.indexOf(currentItem);
+          if (vIndex > 0) {
+            const nextItem = currentVisible[vIndex - 1];
+            openPreview(allItems.indexOf(nextItem));
+          }
+        });
+
+        modalNext.addEventListener("click", () => {
+          const currentVisible = getVisibleItems();
+          const allItems = Array.from(document.querySelectorAll(".td-portfolio-filter-wrapper"));
+          const currentItem = allItems[currentIndex];
+          const vIndex = currentVisible.indexOf(currentItem);
+          if (vIndex < currentVisible.length - 1) {
+            const nextItem = currentVisible[vIndex + 1];
+            openPreview(allItems.indexOf(nextItem));
+          }
+        });
+
+        function closePreview() {
+          modal.classList.remove("active");
+          modal.setAttribute("aria-hidden", "true");
+          document.body.style.overflow = ""; // Unlock scroll
+          modalInner.innerHTML = ""; // Stop videos
+        }
+
+        modalClose.addEventListener("click", closePreview);
+        modal.addEventListener("click", (e) => { if (e.target === modal || e.target === modalContent) closePreview(); });
+        document.addEventListener("keydown", (e) => {
+          if (!modal.classList.contains("active")) return;
+          if (e.key === "Escape") closePreview();
+          if (e.key === "ArrowLeft") modalPrev.click();
+          if (e.key === "ArrowRight") modalNext.click();
+        });
+
+        // Initialize everything
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", () => {
+            initIsotope();
+            setupLazy();
+            setupPortfolioLightbox();
+          });
+        } else {
+          initIsotope();
+          setupLazy();
+          setupPortfolioLightbox();
+        }
 
         // mobile menu
         (function mobileMenu() {
@@ -2809,3 +2131,4 @@
     </script>
   </body>
 </html>
+

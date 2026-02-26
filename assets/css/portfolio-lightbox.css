@@ -1,0 +1,212 @@
+/* Portfolio Premium Lightbox CSS */
+
+.portfolio-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.98);
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.4s;
+  z-index: 100000;
+  backdrop-filter: blur(10px);
+}
+
+.portfolio-modal.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Header Bar */
+.portfolio-modal-header {
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  color: #fff;
+  z-index: 10002;
+}
+
+.portfolio-counter {
+  font-family: var(--td-ff-body, sans-serif);
+  font-size: 14px;
+  letter-spacing: 1px;
+  opacity: 0.8;
+}
+
+.portfolio-modal-close {
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 32px;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease;
+}
+
+.portfolio-modal-close:hover {
+  transform: rotate(90deg);
+}
+
+/* Main Content Area */
+.portfolio-modal-content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.portfolio-modal-inner {
+  width: 100%;
+  height: 100%;
+  max-width: 90%;
+  max-height: 85%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none; /* Let clicks pass to modalContent for closing */
+}
+
+.portfolio-modal-inner > * {
+  pointer-events: auto; /* Re-enable for the actual media */
+}
+
+.portfolio-modal-image,
+.portfolio-modal-video {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: 4px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+  animation: modalZoomIn 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+@keyframes modalZoomIn {
+  from { transform: scale(0.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+/* Navigation */
+.portfolio-nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  transition: all 0.3s ease;
+  z-index: 10005;
+}
+
+.portfolio-nav-btn:hover:not(:disabled) {
+  background: var(--td-theme-primary, #0b5eff);
+  border-color: transparent;
+}
+
+.portfolio-nav-btn.prev { left: 20px; }
+.portfolio-nav-btn.next { right: 20px; }
+
+.portfolio-nav-btn:disabled {
+  opacity: 0.1;
+  cursor: not-allowed;
+}
+
+/* Thumbnail Strip */
+.portfolio-thumb-strip {
+  height: 100px;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  gap: 10px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  margin-top: auto;
+  z-index: 100010;
+}
+
+.portfolio-thumb {
+  width: 60px;
+  height: 60px;
+  flex-shrink: 0;
+  border-radius: 4px;
+  overflow: hidden;
+  cursor: pointer;
+  opacity: 0.4;
+  border: 2px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.portfolio-thumb.active {
+  opacity: 1;
+  border-color: var(--td-theme-primary, #0b5eff);
+  transform: scale(1.1);
+}
+
+.portfolio-thumb:hover {
+  opacity: 0.8;
+}
+
+.portfolio-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.portfolio-thumb video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Hide scrollbar for thumb strip */
+.portfolio-thumb-strip::-webkit-scrollbar {
+  display: none;
+}
+.portfolio-thumb-strip {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Mobile Adjustments */
+@media (max-width: 768px) {
+  .portfolio-modal-inner {
+    width: 95%;
+    height: 70%;
+  }
+  .portfolio-nav-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
+  }
+  .portfolio-nav-btn.prev { left: 10px; }
+  .portfolio-nav-btn.next { right: 10px; }
+  .portfolio-thumb-strip {
+    height: 80px;
+    justify-content: flex-start;
+  }
+  .portfolio-thumb {
+    width: 50px;
+    height: 50px;
+  }
+}

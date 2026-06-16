@@ -173,6 +173,15 @@ export default function Portfolio() {
         modal.classList.add("active");
         modal.setAttribute("aria-hidden", "false");
         document.body.style.overflow = "hidden";
+        document.documentElement.style.overflow = "hidden";
+        
+        // Pause GSAP ScrollSmoother if initialized
+        if (window.ScrollSmoother) {
+          const smoother = window.ScrollSmoother.get();
+          if (smoother) {
+            smoother.paused(true);
+          }
+        }
       }
     }
 
@@ -231,6 +240,15 @@ export default function Portfolio() {
         modal.classList.remove("active");
         modal.setAttribute("aria-hidden", "true");
         document.body.style.overflow = "";
+        document.documentElement.style.overflow = "";
+      }
+      
+      // Resume GSAP ScrollSmoother if initialized
+      if (window.ScrollSmoother) {
+        const smoother = window.ScrollSmoother.get();
+        if (smoother) {
+          smoother.paused(false);
+        }
       }
       if (modalInner) modalInner.innerHTML = "";
     }

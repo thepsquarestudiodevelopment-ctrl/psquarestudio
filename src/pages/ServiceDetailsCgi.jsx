@@ -1,210 +1,45 @@
-<!DOCTYPE html>
-<html class="no-js" lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="x-ua-compatible" content="ie=edge" />
-    <title>The PSquare Studio</title>
-<meta name="description" content="The PSQUARE Studio is a branding and digital agency in Ahmedabad specializing in creative design, branding, and digital experiences.">    <meta property="og:title" content="The PSQUARE Studio | Branding Agency in Ahmedabad">
-<meta property="og:description" content="Creative branding and digital design agency in Ahmedabad.">
-<meta property="og:type" content="website">    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <!-- Google tag (gtag.js) -->
-    <script
-      async
-      src="https://www.googletagmanager.com/gtag/js?id=G-W45LQ87Y2N"
-    ></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
-      }
-      gtag("js", new Date());
+import React from "react";
+import { Link } from "react-router-dom";
+import usePageInit from "../hooks/usePageInit";
 
-      gtag("config", "G-W45LQ87Y2N");
-    </script>
-    <link
-      rel="shortcut icon"
-      type="image/x-icon"
-      href="assets/img/logo/Asset1.ico"
-    />
-    <!-- Place favicon.ico in the root directory -->
+export default function ServiceDetailsCgi() {
+  usePageInit();
 
-    <!-- CSS here -->
-    <link rel="stylesheet" href="assets/css/header.css" />
-    <!--<< Bootstrap min.css >>-->
-    <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
-    <!--<< magnific-popup.css >>-->
-    <link rel="stylesheet" href="assets/css/magnific-popup.css" />
-    <!--<< fontawesome-all.min.css >>-->
-    <link rel="stylesheet" href="assets/css/fontawesome-all.min.css" />
-    <!--<< swiper-bundle.min.css >>-->
-    <link rel="stylesheet" href="assets/css/swiper-bundle.min.css" />
-    <!--<< odometer.css >>-->
-    <link rel="stylesheet" href="assets/css/odometer.css" />
-    <!--<< ion.rangeSlider.min.css >>-->
-    <link rel="stylesheet" href="assets/css/ion.rangeSlider.min.css" />
-    <!--<< effect-slicer.css >>-->
-    <link rel="stylesheet" href="assets/css/effect-slicer.css" />
-    <!--<< animate.css >>-->
-    <link rel="stylesheet" href="assets/css/animate.css" />
-    <!--<< default.css >>-->
-    <link rel="stylesheet" href="assets/css/defauls-spacing.css" />
-    <!--<< main.css >>-->
-    <link rel="stylesheet" href="assets/css/main.css" />
-    <!-- Google tag (gtag.js) -->
-    <script
-      async
-      src="https://www.googletagmanager.com/gtag/js?id=G-W45LQ87Y2N"
-    ></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
-      }
-      gtag("js", new Date());
-
-      gtag("config", "G-W45LQ87Y2N");
-    </script>
-  </head>
-
-  <body>
-    <!-- Preloader Start -->
-    <div id="preloader" class="preloader">
-      <div class="animation-preloader">
-        <div class="spinner"></div>
-        <div class="txt-loading">
-          <span data-text-preloader="" class="letters-loading"> P </span>
-          <span data-text-preloader="" class="letters-loading"> S </span>
-          <span data-text-preloader="" class="letters-loading"> Q </span>
-          <span data-text-preloader="" class="letters-loading"> U </span>
-          <span data-text-preloader="" class="letters-loading"> A </span>
-          <span data-text-preloader="" class="letters-loading"> R </span>
-          <span data-text-preloader="" class="letters-loading"> E </span>
-        </div>
-        <p class="text-center">Loading</p>
-      </div>
-      <div class="loader">
-        <div class="row">
-          <div class="col-3 loader-section section-left">
-            <div class="bg"></div>
-          </div>
-          <div class="col-3 loader-section section-left">
-            <div class="bg"></div>
-          </div>
-          <div class="col-3 loader-section section-right">
-            <div class="bg"></div>
-          </div>
-          <div class="col-3 loader-section section-right">
-            <div class="bg"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Start Cursor Pointer -->
-    <div class="mouse-follower">
-      <span class="cursor-outline"></span>
-      <span class="cursor-dot"></span>
-    </div>
-    <!-- End Cursor Pointer -->
-
-    <!-- Scroll-top -->
-    <button class="scroll__top scroll-to-target" data-target="html">
-      <i class="fa-sharp fa-regular fa-arrow-up"></i>
-    </button>
-    <!-- Scroll-top-end-->
-
-    <!-- header-area -->
-    <header class="header-area">
-      <div class="header-container">
-        <!-- Logo -->
-        <div class="logo">
-          <a href="index">
-            <!-- Replace with your actual logo -->
-            <img src="assets/img/logo/Asset1.png" alt="Company Logo" />
-          </a>
-        </div>
-
-        <!-- Desktop Navigation -->
-        <nav>
-          <ul class="nav-menu">
-            <li><a href="index">Home</a></li>
-            <li><a href="about">Who We Are</a></li>
-            <li><a href="portfolio">Portfolio</a></li>
-            <li><a href="service">Services</a></li>
-            <li><a href="contact">Contact Us</a></li>
-            <li>
-              <button
-                class="cta-button"
- onclick="window.location.href='contact'"              >
-                Get Started
-              </button>
-            </li>
-          </ul>
-        </nav>
-
-        <!-- Mobile Menu Toggle -->
-        <button class="mobile-toggle" id="mobileToggle">
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
-      </div>
-
-      <!-- Mobile Menu -->
-      <div class="mobile-menu" id="mobileMenu">
-        <button class="close-menu" id="closeMenu">×</button>
-        <ul>
-          <li><a href="index">Home</a></li>
-          <li><a href="about">Who We Are</a></li>
-          <li><a href="portfolio">Portfolio</a></li>
-          <li><a href="service">Services</a></li>
-          <li><a href="contact">Contact Us</a></li>
-        </ul>
-        <a href="contact"
-          ><button class="cta-button">Get Started</button></a
-        >
-      </div>
-
-      <!-- Overlay -->
-      <div class="overlay" id="overlay"></div>
-    </header>
-    <!-- header-area-end -->
-    <div id="smooth-wrapper">
-      <div id="smooth-content">
-        <main>
-          <!-- td-service-hero-start -->
-          <div class="td-service-area td-breadcrumb-spacing pb-45">
-            <div class="container">
-              <div class="row">
-                <div class="col-lg-6">
-                  <div class="td-breadcrumb-wrap">
+  return (
+    <>
+      {/* td-service-hero-start */}
+          <div className="td-service-area td-breadcrumb-spacing pb-45">
+            <div className="container">
+              <div className="row">
+                <div className="col-lg-6">
+                  <div className="td-breadcrumb-wrap">
                     <h2
-                      class="td-section-page-title mb-35 wow fadeInLeft"
+                      className="td-section-page-title mb-35 wow fadeInLeft"
                       data-wow-delay=".5s"
                       data-wow-duration="1s"
                     >
                       CGI
                     </h2>
                     <div
-                      class="td-service-hero-thumb-2 fix td-rounded-10 pt-105 mb-30"
+                      className="td-service-hero-thumb-2 fix td-rounded-10 pt-105 mb-30"
                     >
                       <img
                         data-speed=".9"
-                        class="td-rounded-10"
-                        src="assets/img/service/hero/5/thumb-2.jpg"
+                        className="td-rounded-10"
+                        src="/assets/img/service/hero/5/thumb-2.jpg"
                         alt=""
                       />
                     </div>
                   </div>
                 </div>
-                <div class="col-lg-6">
-                  <div class="td-service-hero-wrap">
+                <div className="col-lg-6">
+                  <div className="td-service-hero-wrap">
                     <div
-                      class="td-service-hero-content ml-110 wow fadeInRight"
+                      className="td-service-hero-content ml-110 wow fadeInRight"
                       data-wow-delay=".5s"
                       data-wow-duration="1s"
                     >
-                      <p class="mb-40">
+                      <p className="mb-40">
                         At The P Square Studio, our CGI services blend
                         creativity and technology to create breathtaking
                         visuals. From product visualization to 3D animation, we
@@ -212,8 +47,8 @@
                         realism. Perfect for brands seeking cinematic,
                         unforgettable imagery.
                       </p>
-                      <div class="td-service-hero-border mb-60"></div>
-                      <div class="td-about-main-feature-list">
+                      <div className="td-service-hero-border mb-60"></div>
+                      <div className="td-about-main-feature-list">
                         <ul>
                           <li>Product CGI Rendering</li>
                           <li>Architectural CGI Visualization</li>
@@ -224,11 +59,11 @@
                         </ul>
                       </div>
                     </div>
-                    <div class="td-service-hero-thumb fix td-rounded-10 pt-200">
+                    <div className="td-service-hero-thumb fix td-rounded-10 pt-200">
                       <img
                         data-speed=".9"
-                        class="td-rounded-10"
-                        src="assets/img/service/hero/5/thumb.png"
+                        className="td-rounded-10"
+                        src="/assets/img/service/hero/5/thumb.png"
                         alt=""
                       />
                     </div>
@@ -237,32 +72,32 @@
               </div>
             </div>
           </div>
-          <!-- td-service-hero-end -->
+          {/* td-service-hero-end */}
 
-          <!-- td-service-process-area-start -->
-          <div class="td-service-process-area td-service-2-main-wrap pt-125">
-            <div class="container">
-              <div class="row">
-                <div class="col-xl-7">
-                  <div class="td-service-2-title-wrap mb-60 td-title-anim">
-                    <span class="td-section-2-subtitle mb-25 d-block"
+          {/* td-service-process-area-start */}
+          <div className="td-service-process-area td-service-2-main-wrap pt-125">
+            <div className="container">
+              <div className="row">
+                <div className="col-xl-7">
+                  <div className="td-service-2-title-wrap mb-60 td-title-anim">
+                    <span className="td-section-2-subtitle mb-25 d-block"
                       >// P Square Working Process</span
                     >
-                    <h2 class="td-section-2-title d-inline-block">
+                    <h2 className="td-section-2-title d-inline-block">
                       Our standard design thinking <span>process</span>
                     </h2>
                   </div>
                 </div>
               </div>
-              <div class="row gx-0">
+              <div className="row gx-0">
                 <div
-                  class="col-lg-3 col-md-6 col-sm-6 wow fadeInUp"
+                  className="col-lg-3 col-md-6 col-sm-6 wow fadeInUp"
                   data-wow-delay=".3s"
                   data-wow-duration="1s"
                 >
-                  <div class="td-service-process-item mt-120">
+                  <div className="td-service-process-item mt-120">
                     <span
-                      class="icons mb-60 d-flex align-items-start justify-content-between"
+                      className="icons mb-60 d-flex align-items-start justify-content-between"
                     >
                       <svg
                         width="64"
@@ -298,23 +133,23 @@
                           fill="#1C1D1F"
                         />
                       </svg>
-                      <span class="number">01</span>
+                      <span className="number">01</span>
                     </span>
-                    <h5 class="title mb-15">Discover</h5>
-                    <p class="para">
+                    <h5 className="title mb-15">Discover</h5>
+                    <p className="para">
                       We analyze concept, mood, and visual objectives for CGI
                       execution.
                     </p>
                   </div>
                 </div>
                 <div
-                  class="col-lg-3 col-md-6 col-sm-6 wow fadeInUp"
+                  className="col-lg-3 col-md-6 col-sm-6 wow fadeInUp"
                   data-wow-delay=".5s"
                   data-wow-duration="1s"
                 >
-                  <div class="td-service-process-item">
+                  <div className="td-service-process-item">
                     <span
-                      class="icons mb-60 d-flex align-items-start justify-content-between"
+                      className="icons mb-60 d-flex align-items-start justify-content-between"
                     >
                       <svg
                         width="64"
@@ -367,23 +202,23 @@
                           </clipPath>
                         </defs>
                       </svg>
-                      <span class="number">02</span>
+                      <span className="number">02</span>
                     </span>
-                    <h5 class="title mb-15">Define</h5>
-                    <p class="para">
+                    <h5 className="title mb-15">Define</h5>
+                    <p className="para">
                       Creating models, textures, lighting setups, and scene
                       compositions.
                     </p>
                   </div>
                 </div>
                 <div
-                  class="col-lg-3 col-md-6 col-sm-6 wow fadeInUp"
+                  className="col-lg-3 col-md-6 col-sm-6 wow fadeInUp"
                   data-wow-delay=".7s"
                   data-wow-duration="1s"
                 >
-                  <div class="td-service-process-item mt-120">
+                  <div className="td-service-process-item mt-120">
                     <span
-                      class="icons mb-60 d-flex align-items-start justify-content-between"
+                      className="icons mb-60 d-flex align-items-start justify-content-between"
                     >
                       <svg
                         width="64"
@@ -406,23 +241,23 @@
                           </clipPath>
                         </defs>
                       </svg>
-                      <span class="number">03</span>
+                      <span className="number">03</span>
                     </span>
-                    <h5 class="title mb-15">Develop</h5>
-                    <p class="para">
+                    <h5 className="title mb-15">Develop</h5>
+                    <p className="para">
                       Rendering, refining details, and building hyper-realistic
                       visuals.
                     </p>
                   </div>
                 </div>
                 <div
-                  class="col-lg-3 col-md-6 col-sm-6 wow fadeInUp"
+                  className="col-lg-3 col-md-6 col-sm-6 wow fadeInUp"
                   data-wow-delay=".9s"
                   data-wow-duration="1s"
                 >
-                  <div class="td-service-process-item">
+                  <div className="td-service-process-item">
                     <span
-                      class="icons mb-60 d-flex align-items-start justify-content-between"
+                      className="icons mb-60 d-flex align-items-start justify-content-between"
                     >
                       <svg
                         width="64"
@@ -515,10 +350,10 @@
                           </clipPath>
                         </defs>
                       </svg>
-                      <span class="number">04</span>
+                      <span className="number">04</span>
                     </span>
-                    <h5 class="title mb-15">Deliver</h5>
-                    <p class="para">
+                    <h5 className="title mb-15">Deliver</h5>
+                    <p className="para">
                       High-resolution CGI outputs ready for branding, ads, and
                       digital use.
                     </p>
@@ -527,75 +362,75 @@
               </div>
             </div>
           </div>
-          <!-- td-service-process-area-end -->
+          {/* td-service-process-area-end */}
 
-          <!-- td-service-replace-area-start -->
-          <div class="td-service-replace-area pt-120 pb-130">
-            <div class="container">
-              <div class="row">
-                <div class="col-lg-10">
-                  <div class="td-service-main-content mb-85">
-                    <h2 class="td-text-invert">
+          {/* td-service-replace-area-start */}
+          <div className="td-service-replace-area pt-120 pb-130">
+            <div className="container">
+              <div className="row">
+                <div className="col-lg-10">
+                  <div className="td-service-main-content mb-85">
+                    <h2 className="td-text-invert">
                       Imagination, Rendered to
                       <br /> Perfection.
                     </h2>
                   </div>
                 </div>
-                <div class="col-lg-4">
-                  <div class="td-service-replace-shape pt-100 pb-30">
-                    <img src="assets/img/service/replace/shape.png" alt="" />
+                <div className="col-lg-4">
+                  <div className="td-service-replace-shape pt-100 pb-30">
+                    <img src="/assets/img/service/replace/shape.png" alt="" />
                   </div>
                 </div>
-                <div class="col-lg-8">
-                  <div class="td-service-replace-content">
-                    <div class="td-service-replace-thumb mb-50">
+                <div className="col-lg-8">
+                  <div className="td-service-replace-content">
+                    <div className="td-service-replace-thumb mb-50">
                       <img
-                        class="td-rounded-10"
-                        src="assets/img/service/hero/5/thumb copy.jpg"
+                        className="td-rounded-10"
+                        src="/assets/img/service/hero/5/thumb copy.jpg"
                         alt=""
                       />
                     </div>
-                    <!-- <div class="row">
-                                        <div class="col-lg-6 col-md-6">
-                                            <div class="mb-20">
+                    {/* <div className="row">
+                                        <div className="col-lg-6 col-md-6">
+                                            <div className="mb-20">
                                                 <p>Receive your design within a few business days and be updated on the process. Everything you need for a digitally driven brand. Defined proposition. Conceptual realization.</p>
                                             </div>
                                         </div>
-                                        <div class="col-lg-6 col-md-6">
-                                            <div class="mb-20">
+                                        <div className="col-lg-6 col-md-6">
+                                            <div className="mb-20">
                                                 <p>Receive your design within a few business days and be updated on the process. Everything you need for a digitally driven brand. Defined proposition. Conceptual realization.</p>
                                             </div>
                                         </div>
-                                    </div> -->
+                                    </div> */}
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <!-- td-service-replace-area-end -->
+          {/* td-service-replace-area-end */}
 
-          <!-- td-cta-area-start -->
-          <div class="container">
-            <div class="row">
-              <div class="col-12">
-                <div class="td-footer-4-bg text-center p-relative">
+          {/* td-cta-area-start */}
+          <div className="container">
+            <div className="row">
+              <div className="col-12">
+                <div className="td-footer-4-bg text-center p-relative">
                   <div
-                    class="td-footer-4-shape td-btn-bounce d-none d-lg-block"
+                    className="td-footer-4-shape td-btn-bounce d-none d-lg-block"
                   >
-                    <img src="assets/img/cta/cta-4/shape.png" alt="" />
+                    <img src="/assets/img/cta/cta-4/shape.png" alt="" />
                   </div>
                   <div
-                    class="td-footer-4-shape-2 td-btn-bounce d-none d-lg-block"
+                    className="td-footer-4-shape-2 td-btn-bounce d-none d-lg-block"
                   >
-                    <img src="assets/img/cta/cta.png" alt="" />
+                    <img src="/assets/img/cta/cta.png" alt="" />
                   </div>
                   <h2
-                    class="td-footer-4-bigtitle mb-45 td-split-text td-split-in-right"
+                    className="td-footer-4-bigtitle mb-45 td-split-text td-split-in-right"
                   >
                     Let's Design Spaces <br />
                     That Tell <br />Stories - Inside The <br />Square.
                   </h2>
-                  <a href="contact" class="td-portfolio-4-btn">
+                  <Link to="/contact" className="td-portfolio-4-btn">
                     <span>
                       <svg
                         width="16"
@@ -611,7 +446,7 @@
                       </svg>
                     </span>
                     let’s talk with us
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -622,139 +457,7 @@
           <br />
           <br />
           <br />
-          <!-- td-cta-area-end -->
-        </main>
-        <!-- main-area-end -->
-
-        <!-- footer-area-start -->
-        <footer>
-          <br />
-          <br />
-          <div class="td-footer-area td-footer-2-wrap">
-            <div class="container">
-              <div class="row">
-                <div class="col-lg-6 mb-30">
-                  <div class="td-footer-3-widget">
-                    <h2 class="td-footer-2-bigtitle">
-                      Entrust design<br />
-                      to professionals
-                    </h2>
-                  </div>
-                </div>
-                <div class="col-lg-3 col-md-6 col-sm-6 mb-30">
-                  <div class="td-footer-3-widget">
-                    <h4 class="td-footer-3-title mb-15">India</h4>
-                    <a class="links mb-40 d-inline-block" href="#"
-                      >Ranip —<br />
-                      Ahmedabad, Gujarat</a
-                    >
-
-                    <div class="td-footer-3-social">
-                      <a href="http://www.facebook.com/PSQUAERE?mibextid=ZbWKwL"
-                        ><i class="fa-brands fa-facebook-f"></i
-                      ></a>
-                      <a
-                        href="https://www.linkedin.com/company/the-psquare-studio/?viewAsMember=true"
-                        ><i class="fa-brands fa-linkedin-in"></i
-                      ></a>
-                      <a href="https://www.instagram.com/thepsquarestudio/"
-                        ><i class="fa-brands fa-instagram"></i
-                      ></a>
-                      <a
-                        href="https://api.whatsapp.com/send/?phone=%2B919898709490&text&type=phone_number&app_absent=0"
-                        ><i class="fa-brands fa-whatsapp"></i
-                      ></a>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-lg-3 col-md-6 col-sm-6 mb-30">
-                  <div class="td-footer-3-widget">
-                    <h4 class="td-footer-3-title mb-15">Say hello!</h4>
-                    <a class="links links-3 d-block mb-5" href="#"
-                      >thepsquarestudio25@gmail.com</a
-                    >
-                    <a class="links-2" href="tel:+1234567890"
-                      >+91 98987 09490</a
-                    >
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="container">
-              <div class="td-footer-2-border mt-60">
-                <div class="row align-items-center">
-                  <div class="col-lg-8">
-                    <div class="td-footer-3-menu mb-10">
-                      <ul>
-                        <li>
-                          <a href="about">Who We Are</a>
-                        </li>
-                        <li>
-                          <a href="portfolio">Portfolio</a>
-                        </li>
-                        <li><a href="service">Services</a></li>
-                        <!-- <li><a href="#">Blog</a></li> -->
-                        <li><a href="contact">Contact</a></li>
-                      </ul>
-                    </div>
-                  </div>
-                  <div class="col-lg-4">
-                    <div class="td-footer-3-copyright text-lg-end mb-10">
-                      <p>
-                        © 2025 <a href="#">PSQUARE.</a> All Rights Reserved.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </footer>
-        <!-- footer-area-end -->
-      </div>
-    </div>
-
-    <!-- JS here -->
-    <!-- header.js -->
-    <script src="assets/js/header.js"></script>
-    <!--<< jquery.Js >>-->
-    <script src="assets/js/vendor/jquery.js"></script>
-    <!--<< bootstrap.min.Js >>-->
-    <script src="assets/js/bootstrap.min.js"></script>
-    <!--<< gsap.Js >>-->
-    <script src="assets/js/jsap/gsap.js"></script>
-    <!--<< gsap-scroll-smoother.Js >>-->
-    <script src="assets/js/jsap/gsap-scroll-smoother.js"></script>
-    <!--<< gsap-scroll-trigger.Js >>-->
-    <script src="assets/js/jsap/gsap-scroll-trigger.js"></script>
-    <!--<< gsap-scroll-to-plugin.Js >>-->
-    <script src="assets/js/jsap/gsap-scroll-to-plugin.js"></script>
-    <!--<< gsap-split-text.Js >>-->
-    <script src="assets/js/jsap/gsap-split-text.js"></script>
-    <!--<< isotope.pkgd.min.Js >>-->
-    <script src="assets/js/isotope.pkgd.min.js"></script>
-    <!--<< ion.rangeSlider.min.Js >>-->
-    <script src="assets/js/ion.rangeSlider.min.js"></script>
-    <!--<< effect-slicer.Js >>-->
-    <script src="assets/js/effect-slicer.js"></script>
-    <!--<< imagesloaded.pkgd.min.Js >>-->
-    <script src="assets/js/imagesloaded.pkgd.min.js"></script>
-    <!--<< jquery.magnific-popup.min.Js >>-->
-    <script src="assets/js/jquery.magnific-popup.min.js"></script>
-    <!--<< jquery.odometer.min.Js >>-->
-    <script src="assets/js/jquery.odometer.min.js"></script>
-    <!--<< jquery-appear.Js >>-->
-    <script src="assets/js/jquery-appear.js"></script>
-    <!--<< swiper-bundle.min.Js >>-->
-    <script src="assets/js/swiper-bundle.min.js"></script>
-    <!--<< jquery.nice-select.min.Js >>-->
-    <script src="assets/js/nice-select.js"></script>
-    <!--<< wow.Js >>-->
-    <script src="assets/js/wow.js"></script>
-    <!--<< ajax-form.Js >>-->
-    <script src="assets/js/ajax-form.js"></script>
-    <!--<< main.Js >>-->
-    <script src="assets/js/main.js"></script>
-  </body>
-</html>
-
+          {/* td-cta-area-end */}
+    </>
+  );
+}

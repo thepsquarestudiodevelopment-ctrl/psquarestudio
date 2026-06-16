@@ -1,0 +1,9 @@
+/* App styles cleared for template integration */
+html, body {
+  overflow-x: hidden;
+  width: 100%;
+}
+#smooth-wrapper {
+  overflow-x: hidden;
+  width: 100%;
+}

@@ -289,6 +289,26 @@ export default function Portfolio() {
     initIsotope();
     setupPortfolioLightbox();
 
+    // Optimize performance: Disable autoplay on all grid videos and use Hover-to-Play
+    const gridVideos = document.querySelectorAll(".td-portfolio-filter-thumb video");
+    gridVideos.forEach((vid) => {
+      vid.removeAttribute("autoplay");
+      vid.autoplay = false;
+      vid.pause();
+
+      const container = vid.closest(".td-portfolio-filter-wrapper");
+      if (container) {
+        const handleMouseEnter = () => {
+          vid.play().catch(() => {});
+        };
+        const handleMouseLeave = () => {
+          vid.pause();
+        };
+        container.addEventListener("mouseenter", handleMouseEnter);
+        container.addEventListener("mouseleave", handleMouseLeave);
+      }
+    });
+
     return () => {
       document.removeEventListener("keydown", handleKeydown);
     };

@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { createPortal } from "react-dom";
 import { Link } from "react-router-dom";
 import usePageInit from "../hooks/usePageInit";
 
@@ -99,7 +100,6 @@ export default function Portfolio() {
     const modalContent = document.getElementById("modalContent");
     
     let currentIndex = 0;
-    let visibleItems = [];
 
     function getVisibleItems() {
       return Array.from(document.querySelectorAll(".td-portfolio-filter-wrapper")).filter(item => {
@@ -108,8 +108,8 @@ export default function Portfolio() {
     }
 
     function openPreview(index, isFromItemClick = false) {
-      const allItems = Array.from(document.querySelectorAll(".td-portfolio-filter-wrapper"));
-      const item = allItems[index];
+      const visibleItems = getVisibleItems();
+      const item = visibleItems[index];
       if (!item) return;
 
       currentIndex = index;
@@ -134,21 +134,40 @@ export default function Portfolio() {
         }
       }
 
-      const currentVisibleItems = getVisibleItems();
-      const vIndex = currentVisibleItems.indexOf(item);
       if (modalCounter) {
-        modalCounter.textContent = `${vIndex + 1} / ${currentVisibleItems.length}`;
+        modalCounter.textContent = `${index + 1} / ${visibleItems.length}`;
       }
 
-      document.querySelectorAll(".portfolio-thumb").forEach(t => t.classList.remove("active"));
-      if (modalThumbStrip && modalThumbStrip.children[index]) {
-        const activeThumb = modalThumbStrip.children[index];
-        activeThumb.classList.add("active");
-        activeThumb.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+      // Highlight active thumbnail and scroll it into view (match by source URL first, fallback to index)
+      let highlightedAny = false;
+      document.querySelectorAll(".portfolio-thumb").forEach((t, tIdx) => {
+        const tMedia = t.querySelector("img, video");
+        const tSrc = tMedia ? (tMedia.src || tMedia.getAttribute("src")) : "";
+        
+        // Check if absolute or relative URLs match
+        if (tSrc && (tSrc === src || src.endsWith(tMedia.getAttribute("src")) || tSrc.endsWith(src))) {
+          t.classList.add("active");
+          t.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+          highlightedAny = true;
+        } else {
+          t.classList.remove("active");
+        }
+      });
+
+      // Index-based fallback
+      if (!highlightedAny) {
+        document.querySelectorAll(".portfolio-thumb").forEach((t, tIdx) => {
+          if (tIdx === index) {
+            t.classList.add("active");
+            t.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+          } else {
+            t.classList.remove("active");
+          }
+        });
       }
 
-      if (modalPrev) modalPrev.disabled = vIndex === 0;
-      if (modalNext) modalNext.disabled = vIndex === currentVisibleItems.length - 1;
+      if (modalPrev) modalPrev.disabled = index === 0;
+      if (modalNext) modalNext.disabled = index === visibleItems.length - 1;
 
       if (isFromItemClick && modal) {
         modal.classList.add("active");
@@ -158,10 +177,10 @@ export default function Portfolio() {
     }
 
     function setupPortfolioLightbox() {
-      const items = Array.from(document.querySelectorAll(".td-portfolio-filter-wrapper"));
+      const visibleItems = getVisibleItems();
       if (modalThumbStrip) {
         modalThumbStrip.innerHTML = "";
-        items.forEach((item, index) => {
+        visibleItems.forEach((item, index) => {
           const img = item.querySelector("img");
           const video = item.querySelector("video");
           const thumb = document.createElement("div");
@@ -170,26 +189,42 @@ export default function Portfolio() {
           
           if (img) {
             const tImg = document.createElement("img");
-            tImg.src = img.dataset.src || img.src;
+            tImg.src = img.dataset.src || img.src || img.getAttribute("src");
             thumb.appendChild(tImg);
           } else if (video) {
-            const tVid = document.createElement("video");
-            tVid.src = video.dataset.src || (video.querySelector("source") && video.querySelector("source").src);
-            tVid.muted = true;
-            thumb.appendChild(tVid);
+            const poster = video.getAttribute("poster");
+            if (poster) {
+              const tImg = document.createElement("img");
+              tImg.src = poster;
+              thumb.appendChild(tImg);
+            } else {
+              const tVid = document.createElement("video");
+              tVid.src = video.src || video.getAttribute("src") || video.dataset.src || (video.querySelector("source") && video.querySelector("source").src);
+              tVid.muted = true;
+              tVid.playsInline = true;
+              thumb.appendChild(tVid);
+            }
           }
 
           thumb.addEventListener("click", () => openPreview(index));
           modalThumbStrip.appendChild(thumb);
-
-          item.addEventListener("click", () => {
-            visibleItems = getVisibleItems();
-            currentIndex = visibleItems.indexOf(item);
-            openPreview(index, true);
-          });
         });
       }
     }
+
+    // Attach click events to portfolio grid items once
+    const gridItems = Array.from(document.querySelectorAll(".td-portfolio-filter-wrapper"));
+    gridItems.forEach((item) => {
+      item.addEventListener("click", () => {
+        const visibleItems = getVisibleItems();
+        const index = visibleItems.indexOf(item);
+        if (index !== -1) {
+          // Re-generate thumbnail strip to ensure it matches current filter before opening
+          setupPortfolioLightbox();
+          openPreview(index, true);
+        }
+      });
+    });
 
     function closePreview() {
       if (modal) {
@@ -202,26 +237,17 @@ export default function Portfolio() {
 
     if (modalPrev) {
       modalPrev.addEventListener("click", () => {
-        const currentVisible = getVisibleItems();
-        const allItems = Array.from(document.querySelectorAll(".td-portfolio-filter-wrapper"));
-        const currentItem = allItems[currentIndex];
-        const vIndex = currentVisible.indexOf(currentItem);
-        if (vIndex > 0) {
-          const nextItem = currentVisible[vIndex - 1];
-          openPreview(allItems.indexOf(nextItem));
+        if (currentIndex > 0) {
+          openPreview(currentIndex - 1);
         }
       });
     }
 
     if (modalNext) {
       modalNext.addEventListener("click", () => {
-        const currentVisible = getVisibleItems();
-        const allItems = Array.from(document.querySelectorAll(".td-portfolio-filter-wrapper"));
-        const currentItem = allItems[currentIndex];
-        const vIndex = currentVisible.indexOf(currentItem);
-        if (vIndex < currentVisible.length - 1) {
-          const nextItem = currentVisible[vIndex + 1];
-          openPreview(allItems.indexOf(nextItem));
+        const visibleItems = getVisibleItems();
+        if (currentIndex < visibleItems.length - 1) {
+          openPreview(currentIndex + 1);
         }
       });
     }
@@ -1355,18 +1381,21 @@ export default function Portfolio() {
           </div>
         
 
-<div id="portfolioModal" className="portfolio-modal" aria-hidden="true" role="dialog">
-      <div className="portfolio-modal-header">
-        <div className="portfolio-counter" id="modalCounter"></div>
-        <button className="portfolio-modal-close" id="modalClose" aria-label="Close preview">×</button>
-      </div>
-      <div className="portfolio-modal-content" id="modalContent">
-        <button className="portfolio-nav-btn prev" id="modalPrev" aria-label="Previous">{"⟨"}</button>
-        <div className="portfolio-modal-inner" id="modalInner"></div>
-        <button className="portfolio-nav-btn next" id="modalNext" aria-label="Next">{"⟩"}</button>
-      </div>
-      <div className="portfolio-thumb-strip" id="modalThumbStrip"></div>
-    </div>
+      {createPortal(
+        <div id="portfolioModal" className="portfolio-modal" aria-hidden="true" role="dialog">
+          <div className="portfolio-modal-header">
+            <div className="portfolio-counter" id="modalCounter"></div>
+            <button className="portfolio-modal-close" id="modalClose" aria-label="Close preview">×</button>
+          </div>
+          <div className="portfolio-modal-content" id="modalContent">
+            <button className="portfolio-nav-btn prev" id="modalPrev" aria-label="Previous">{"⟨"}</button>
+            <div className="portfolio-modal-inner" id="modalInner"></div>
+            <button className="portfolio-nav-btn next" id="modalNext" aria-label="Next">{"⟩"}</button>
+          </div>
+          <div className="portfolio-thumb-strip" id="modalThumbStrip"></div>
+        </div>,
+        document.body
+      )}
     </div>
   );
 }

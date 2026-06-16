@@ -115,7 +115,7 @@ export default function Portfolio() {
       currentIndex = index;
       const img = item.querySelector("img");
       const video = item.querySelector("video");
-      const src = img ? (img.dataset.src || img.src) : (video.dataset.src || (video.querySelector("source") && video.querySelector("source").src));
+      const src = img ? (img.dataset.src || img.src) : (video.src || video.getAttribute("src") || video.dataset.src || (video.querySelector("source") && video.querySelector("source").src));
       
       if (modalInner) {
         modalInner.innerHTML = "";
@@ -129,8 +129,18 @@ export default function Portfolio() {
           mVid.src = src;
           mVid.controls = true;
           mVid.autoplay = true;
+          mVid.playsInline = true;
           mVid.className = "portfolio-modal-video";
           modalInner.appendChild(mVid);
+          
+          // Explicitly play the preview video after it mounts in the DOM
+          setTimeout(() => {
+            mVid.play().catch((err) => {
+              console.log("Autoplay with sound blocked, trying muted...", err);
+              mVid.muted = true;
+              mVid.play().catch(() => {});
+            });
+          }, 50);
         }
       }
 

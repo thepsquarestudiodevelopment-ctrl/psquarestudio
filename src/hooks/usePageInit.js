@@ -121,6 +121,11 @@ export default function usePageInit() {
         }
       }
 
+      // Kill all existing ScrollTriggers to prevent duplicate pins and animation conflicts
+      if (window.ScrollTrigger) {
+        window.ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+      }
+
       // 3. GSAP ScrollTrigger WOW.js replacement for ScrollSmoother compatibility
       if (window.gsap && window.ScrollTrigger) {
         const wowElements = document.querySelectorAll(".wow");
@@ -157,18 +162,21 @@ export default function usePageInit() {
         if (existing) {
           existing.kill();
         }
+        // Reset window scroll to top
+        window.scrollTo(0, 0);
         if (document.getElementById("smooth-wrapper") && document.getElementById("smooth-content")) {
-          window.ScrollSmoother.create({
+          const smoother = window.ScrollSmoother.create({
             smooth: 1.35,
             effects: true,
             smoothTouch: 0.1,
             normalizeScroll: false,
             ignoreMobileResize: true,
           });
+          // Reset smoother scroll position to 0
+          smoother.scrollTop(0);
         }
-      }
-      if (window.ScrollTrigger) {
-        window.ScrollTrigger.refresh();
+      } else {
+        window.scrollTo(0, 0);
       }
 
       // 5. Text Invert & Opacity Scroll Animation (SplitText + ScrollTrigger)
@@ -228,26 +236,28 @@ export default function usePageInit() {
         if (projectpanels.length > 0) {
           const td = window.gsap.matchMedia();
           td.add("(min-width: 991px)", () => {
-            const tdtl = window.gsap.timeline();
             projectpanels.forEach((section) => {
-              tdtl.to(section, {
-                scrollTrigger: {
-                  trigger: section,
-                  pin: section,
-                  scrub: 1,
-                  start: "top top",
-                  end: "bottom 100%",
-                  endTrigger: ".td-service-pin-items",
-                  pinSpacing: false,
-                  markers: false,
-                },
+              window.ScrollTrigger.create({
+                trigger: section,
+                pin: section,
+                start: "top top",
+                end: "bottom 100%",
+                endTrigger: ".td-service-pin-items",
+                pinSpacing: false,
+                markers: false,
               });
             });
           });
         }
       }
+
+      if (window.ScrollTrigger) {
+        window.ScrollTrigger.refresh();
+      }
     }, 150);
 
-    return () => clearTimeout(timer);
+    return () => {
+      clearTimeout(timer);
+    };
   }, [location.pathname]);
 }

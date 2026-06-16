@@ -8,6 +8,12 @@ export default function ScrollToTop() {
   // Restore scroll to top on route change
   useEffect(() => {
     window.scrollTo(0, 0);
+    if (window.ScrollSmoother) {
+      const smoother = window.ScrollSmoother.get();
+      if (smoother) {
+        smoother.scrollTop(0);
+      }
+    }
   }, [pathname]);
 
   // Monitor scroll height to show/hide button
